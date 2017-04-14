@@ -18,40 +18,53 @@ int main(int argc, char ** argv){
 		cout << "Invalid choice. Try again." << endl;
 		return -1;
 	}
+	if(fileLoad != "erase" || fileLoad != "load"){
+		cout << "Invalid choice. Try again." << endl;
+		return -1;
+	}
 	
     //load file into array
-	ifstream in;
-    	string file = "likelihood.txt";
-    
-   	 in.open(file);
-    
-    if (!in.is_open()) {
-        cerr << "Missing file" << endl;
-        return 1;
-    }
-    
-    int almostNum;
-    int chanceArray [10][10];
-    int a = 0;
-    int b = 0;
-    while (in >> almostNum){
-        chanceArray[a][b] = almostNum;
-        b++;
-        if(b == 10){
-            a++;
-            b = 0;
-        }
-        if(a == 10){
-            break;
-        }
-    }
-    
-    for(int i = 0; i <10; i++){
-        for(int j = 0; j < 10; j++){
-            cout<< chanceArray[i][j] << " ";
-        }
-        cout << endl;
-    }
+	if(fileLoad == "load){
+		ifstream in;
+			string file = "likelihood.txt";
+
+		 in.open(file);
+
+		if (!in.is_open()) {
+			cerr << "Missing file" << endl;
+			return 1;
+		}
+
+		int almostNum;
+		int chanceArray [10][10];
+		int a = 0;
+		int b = 0;
+		while (in >> almostNum){
+			chanceArray[a][b] = almostNum;
+			b++;
+			if(b == 10){
+				a++;
+				b = 0;
+			}
+			if(a == 10){
+				break;
+			}
+		}
+
+		for(int i = 0; i <10; i++){
+			for(int j = 0; j < 10; j++){
+				cout<< chanceArray[i][j] << " ";
+			}
+			cout << endl;
+		}  
+	}
+	else{
+		for(int i = 0; i <10; i++){
+			for(int j = 0; j < 10; j++){
+				chanceArray[i][j] = 1;
+			}
+		}
+	}
 
 	
     //put stuff here!
