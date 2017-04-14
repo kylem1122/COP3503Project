@@ -18,7 +18,10 @@ int main(int argc, char ** argv){
 		cout << "Invalid choice. Try again." << endl;
 		return -1;
 	}
-    
+	
+    //load file into array
+	
+	
     //put stuff here!
     
     
