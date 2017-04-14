@@ -14,5 +14,5 @@ int menu(){
     cout<< "4. Exit "<< endl;
     cin>> selection;
     }
-    return selection:
+    return selection;
 }
