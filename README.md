@@ -2,9 +2,11 @@
 Term Project
 
 # RUN
-./project load
-  //Runs project with data from previous games
-./project erase
+### ./project load
+
+Runs project with data from previous games
+  
+### ./project erase
   //Runs project with a 10x10 grid of 1's
   
   
