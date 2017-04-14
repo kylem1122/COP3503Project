@@ -25,7 +25,7 @@ int main(int argc, char ** argv){
 	
 	int chanceArray [10][10];
     //load file into array
-	if(fileLoad == "load){
+	if(fileLoad == "load"){
 		ifstream in;
 			string file = "likelihood.txt";
 
