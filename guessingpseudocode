@@ -11,7 +11,10 @@ procedure searchForHighestNumber
                 max = loadedArray(i,j)
                 maxIndex = (i,j)
             else if (loadedArray(i,j) == max)
-                if (random T/F) //possibly based on dividing the time by a 2 modulus and receiving 0 or 1?
+                if (random T/F) 
+                //possibly based on dividing the time by a 2 modulus and receiving 0 or 1?
+                //cons of this method would be that we will most likely always start guessing from the bottom right corner
+                //open to other suggestions on how to not guess exclusively in the top left or bottom right corners
                     max = loadedArray(i,j)
                     maxIndex = (i,j)
    return maxIndex
