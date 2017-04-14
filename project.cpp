@@ -23,6 +23,7 @@ int main(int argc, char ** argv){
 		return -1;
 	}
 	
+	int chanceArray [10][10];
     //load file into array
 	if(fileLoad == "load){
 		ifstream in;
@@ -36,7 +37,6 @@ int main(int argc, char ** argv){
 		}
 
 		int almostNum;
-		int chanceArray [10][10];
 		int a = 0;
 		int b = 0;
 		while (in >> almostNum){
