@@ -49,3 +49,18 @@ procedure searchForHighestNumber
             maxIndex = (x+1,y)
             
     return maxIndex
+    
+    
+ procedure ifHit
+    object->hit = true
+    previousHit = true
+    for i < 10
+        for j < 10
+            if j = y
+                data at (i,j)++
+        if i = x
+            data at (i,j)++
+ 
+ procedure ifMiss
+    water->hit = true
+    previousHit = false
