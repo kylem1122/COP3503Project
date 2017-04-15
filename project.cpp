@@ -8,6 +8,29 @@
 
 using namespace std;
 
+//check if piece exists
+bool checkExistence(Map& map, string item){
+    for(int i = 0; i < 10; i++){
+        for(int j = 0; j < 10; j++){
+            if(map.getItemAt(i,j).getName() == item){
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+bool checkExistence(Map& map, Item& item){
+    for(int i = 0; i < 10; i++){
+        for(int j = 0; j < 10; j++){
+            if(map.getItemAt(i,j).getName() == item.getName()){
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
 //menu method
 int menu(){
     cout<< endl << "Welcome to War Boats"<< endl;
@@ -65,6 +88,11 @@ void userAddShip(Map& userMap){
         transform(choice.begin(), choice.end(), choice.begin(), ::tolower);
         
         if(choice == "a"){
+            if(checkExistence(userMap, "A")){
+                cout << "This piece is currently on the board."<< endl;
+                cout << "Please modify current pieces through the main menu" << endl;
+                return;
+            }
             cout << endl << endl << "You chose to add an Aircraft Carrier" << endl;
             cout << "The length of an Aircraft Carrier is 5" << endl;
             cout << "Which direction would you like your ship?" << endl;
@@ -173,6 +201,11 @@ void userAddShip(Map& userMap){
             transform(choice.begin(), choice.end(), choice.begin(), ::tolower);
         }
         else if(choice == "b"){
+            if(checkExistence(userMap, "B")){
+                cout << "This piece is currently on the board."<< endl;
+                cout << "Please modify current pieces through the main menu" << endl;
+                return;
+            }
             cout << endl << endl << "You chose to add a Battleship" << endl;
             cout << "The length of a Battleship is 4" << endl;
             cout << "Which direction would you like your ship?" << endl;
@@ -284,6 +317,11 @@ void userAddShip(Map& userMap){
         
         //ADD SUBMARINE
         else if (choice == "s"){
+            if(checkExistence(userMap, "S")){
+                cout << "This piece is currently on the board."<< endl;
+                cout << "Please modify current pieces through the main menu" << endl;
+                return;
+            }
             cout << endl << endl << "You chose to add a Submarine" << endl;
             cout << "The length of a Submarine is 3" << endl;
             cout << "Which direction would you like your ship?" << endl;
@@ -394,6 +432,11 @@ void userAddShip(Map& userMap){
         
         //ADD CRUISER
         else if (choice == "c"){
+            if(checkExistence(userMap, "C")){
+                cout << "This piece is currently on the board."<< endl;
+                cout << "Please modify current pieces through the main menu" << endl;
+                return;
+            }
             cout << endl << endl << "You chose to add a Cruiser" << endl;
             cout << "The length of a Cruiser is 3" << endl;
             cout << "Which direction would you like your ship?" << endl;
@@ -504,6 +547,11 @@ void userAddShip(Map& userMap){
         
         //ADD DESTROYER
         else if (choice == "d"){
+            if(checkExistence(userMap, "D")){
+                cout << "This piece is currently on the board."<< endl;
+                cout << "Please modify current pieces through the main menu" << endl;
+                return;
+            }
             cout << endl << endl << "You chose to add a Destroyer" << endl;
             cout << "The length of a Destroyer is 2" << endl;
             cout << "Which direction would you like your ship?" << endl;
