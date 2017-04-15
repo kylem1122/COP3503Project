@@ -29,10 +29,10 @@ public:
 		return this->size;
 	}
 	void setName(string newName) {
-		name = newName;
+		this->name = newName;
 	}
 	void setSize(int newSize) {
-		size = newSize;
+		this->size = newSize;
 	}
 };
 
