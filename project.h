@@ -16,7 +16,7 @@ public:
     Item(int size, string name){
         this->size = size;
         this->name = name;
-        if(name == "W"){
+        if(name == "~"){
             shipOrNoShip = false;
         }
     };
@@ -67,7 +67,7 @@ public:
     void setWater() {
         for (int i = 0; i != 10; ++i) {
             for (int j = 0; j != 10; ++j) {
-                Item* water = new Item(0, "W");
+                Item* water = new Item(0, "~");
                 board[j][i] = water;
             }
         }
@@ -75,6 +75,10 @@ public:
     
     Item getItemAt(int x, int y){
         return *board[x][y];
+    }
+    
+    void setItemAt(int x, int y, Item newItem){
+        *board[x][y] = newItem;
     }
     
     bool containsItem(string name){
@@ -91,9 +95,10 @@ public:
     void print() {
         for (int i = 0; i != 10; ++i) {
             if(i == 0){
-                cout <<"\tA\tB\tC\tD\tE\tF\tG\tH\tI\tJ" << endl;
+                cout <<"\t\tA\tB\tC\tD\tE\tF\tG\tH\tI\tJ" << endl;
+                cout <<"\t------------------------------------------" << endl;
             }
-            cout << i + 1 << "\t";
+            cout << i + 1 << "\t|\t";
             for (int j = 0; j != 10; ++j) {
                 cout << board[i][j]->getName() << "\t";
             }
