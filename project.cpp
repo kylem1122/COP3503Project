@@ -7,48 +7,60 @@
 
 using namespace std;
 
+
 bool previousHit = false;
-bool previousPreviousHit = false;
 int chanceArray [10][10];
 
 
-bool computerGuess(map& userMap) {
+bool computerGuess(Map& userMap, int x, int y){
     bool hitShip = false;
-    int max_x = 0;
-    int max_y = 0;
-    int max = 0;
     
-    
-    //find first open index
-    for(int i = 0; i < 10; i++){
-        for(int j = 0; j < 10; j++){
-            if(!userMap.getItemAt(i,j).isHit()){
-                max_x = i;
-                max_y = j;
-                max = chanceArray[i][j];
-                break;
-            }
+    if(previousHit){
+        int max_x = 0;
+        int max_y = 0;
+        int max = 0;
+        
+        if(!userMap.getItemAt(x,y-1).isHit() && chanceArray[x][y-1] > max){
+            max_x = x;
+            max_y = y-1;
+            max = chanceArray[max_x][max_y];
         }
-    }
-    
-    
-    //find max index
-    for(int i = max_x; i < 10; i++){
-        for(int j = 0; j <10; j++){
-            if(chanceArray[i][j] > max){
-                if(rand()%2 && !userMap.getItemAt(i,j).isHit()){
-                    max_x = i;
-                    max_y = j;
-                    max = chanceArray[i][i];
-                }
-            }
-            else if(chanceArray[i][j] == max && !userMap.getItemAt(i,j).isHit()){
-                if(rand()%2){
-                    if(rand()%2){
-                        if(rand()%2){
-                            max_x = i;
-                            max_y = j;
-                            max = chanceArray[i][i];
+        
+        if(!userMap.getItemAt(x,y+1).isHit() && chanceArray[x][y+1] > max){
+            max_x = x;
+            max_y = y+1;
+            max = chanceArray[max_x][max_y];
+        }
+        
+        if(!userMap.getItemAt(x-1,y).isHit() && chanceArray[x-1][y] > max){
+            max_x = x-1;
+            max_y = y;
+            max = chanceArray[max_x][max_y];
+        }
+        
+        if(!userMap.getItemAt(x+1,y).isHit() && chanceArray[x+1][y] > max){
+            max_x = x+1;
+            max_y = y;
+            max = chanceArray[max_x][max_y];
+        }
+        
+        if(max == 0){
+            previousHit = false;
+        }
+        
+        if(previousHit){
+            userMap.getItemAt(max_x, max_y).itemHit();
+            if(userMap.getItemAt(max_x, max_y).isShip()){
+                hitShip = true;
+                previousHit = true;
+                
+                for(int i = 0; i < 10; i++){
+                    for(int j = 0; j < 10; j++){
+                        if(i == x){
+                            chanceArray[i][j]++;
+                        }
+                        if(j == y){
+                            chanceArray[i][j]++;
                         }
                     }
                 }
@@ -56,21 +68,66 @@ bool computerGuess(map& userMap) {
         }
     }
     
-    if(previousHit){
-        //do something
-    }
-    else{
+    if(!previousHit){
+        int max_x = 0;
+        int max_y = 0;
+        int max = 0;
+        
+        //find first open index
+        for(int i = 0; i < 10; i++){
+            for(int j = 0; j < 10; j++){
+                if(!userMap.getItemAt(i,j).isHit()){
+                    max_x = i;
+                    max_y = j;
+                    max = chanceArray[i][j];
+                    break;
+                }
+            }
+        }
+        
+        
+        //find max index
+        for(int i = max_x; i < 10; i++){
+            for(int j = 0; j <10; j++){
+                if(chanceArray[i][j] > max){
+                    if(rand()%2 && !userMap.getItemAt(i,j).isHit()){
+                        max_x = i;
+                        max_y = j;
+                        max = chanceArray[i][i];
+                    }
+                }
+                else if(chanceArray[i][j] == max && !userMap.getItemAt(i,j).isHit()){
+                    if(rand()%2){
+                        if(rand()%2){
+                            if(rand()%2){
+                                max_x = i;
+                                max_y = j;
+                                max = chanceArray[i][i];
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        
         userMap.getItemAt(max_x, max_y).itemHit();
         if(userMap.getItemAt(max_x, max_y).isShip()){
             hitShip = true;
+            previousHit = true;
+            
+            for(int i = 0; i < 10; i++){
+                for(int j = 0; j < 10; j++){
+                    if(i == x){
+                        chanceArray[i][j]++;
+                    }
+                    if(j == y){
+                        chanceArray[i][j]++;
+                    }
+                }
+            }
         }
     }
-    
     return hitShip;
-}
-
-bool nextGuess(int x, int y){
-    return true;
 }
 
 
