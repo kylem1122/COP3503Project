@@ -7,76 +7,91 @@ using namespace std;
 
 class Item {
 protected:
-	bool hit = false;
-	int size = 0;
-	string name;
+    bool hit = false;
+    bool shipOrNoShip = true;
+    int size = 0;
+    string name;
 public:
-	Item();
-	Item(bool hit, int size, string name){
-		this->hit = hit;
-		this->size = size;
-		this->name = name;
-	};
-	
-	bool isHit() {
-        	return this->hit;
-   	}
-	
-	string getName() {
-		return this->name;
-	}
-	int getSize() {
-		return this->size;
-	}
-	void setName(string newName) {
-		this->name = newName;
-	}
-	void setSize(int newSize) {
-		this->size = newSize;
-	}
+    Item();
+    Item(int size, string name){
+        this->size = size;
+        this->name = name;
+        if(name == "W"){
+            shipOrNoShip = false;
+        }
+    };
+    
+    bool isHit() {
+        return this->hit;
+    }
+    
+    void itemHit(){
+        this->hit = true;
+        this->name = "X";
+    }
+    
+    string getName() {
+        return name;
+    }
+    
+    int getSize() {
+        return size;
+    }
+    
+    void setName(string newName) {
+        name = newName;
+    }
+    
+    void setSize(int newSize) {
+        size = newSize;
+    }
+    
+    bool isShip(){
+        return shipOrNoShip;
+    }
 };
 
 class Map{
-	Item board[10][10];
-	string type;
+    Item board[10][10];
+    string type;
 public:
-	Map();
-	void setType(string newtype) {
-		type = newtype;
-	}
-	string getType() {
-		return type;
-	}
-	void setShip(int xIndex, int yIndex, Item ship) {
-		board[xIndex][yIndex] = ship;
-	}
-
-	void setWater() {
-		for (int i = 0; i != 10; ++i) {
-			for (int j = 0; j != 10; ++j) {
-				board[j][i] = Item(false, 0, "W");
-			}
-		}
-	}
-	
-	item getItemAt(int x, int y){
-        	return board[x][y];
-    	}
-	
-	void print() {
-		Item temp;
-		string tempName;
-		for (int i = 0; i != 10; ++i) {
-			for (int j = 0; j != 10; ++j) {
-				temp = board[j][i];
-				tempName = temp.getName();
-				cout << tempName << endl;
-			}
-		}
-
-	}
-
-
+    Map();
+    
+    void setType(string newtype) {
+        this->type = newtype;
+    }
+    
+    string getType() {
+        return type;
+    }
+    
+    void setShip(int xIndex, int yIndex, Item ship) {
+        board[xIndex][yIndex] = ship;
+    }
+    
+    void setWater() {
+        for (int i = 0; i != 10; ++i) {
+            for (int j = 0; j != 10; ++j) {
+                board[j][i] = Item(0, "W");
+            }
+        }
+    }
+    
+    Item getItemAt(int x, int y){
+        return board[x][y];
+    }
+    
+    void print() {
+        Item temp;
+        string tempName;
+        for (int i = 0; i != 10; ++i) {
+            for (int j = 0; j != 10; ++j) {
+                temp = board[j][i];
+                tempName = temp.getName();
+                cout << tempName << endl;
+            }
+        }
+    }
 };
 
 //menu method
