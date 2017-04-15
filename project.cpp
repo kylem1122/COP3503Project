@@ -130,6 +130,356 @@ bool computerGuess(Map& userMap, int x, int y){
     return hitShip;
 }
 
+void generateShips(Map& computerMap){
+    
+    //ADD AIRCRAFT CARRIER
+    if(!computerMap.containsItem("A")){
+        bool freeSpace = true;
+        do{
+            int x = rand() % 10;
+            int y = rand() % 10;
+            
+
+            
+            //vertical
+            if(rand() % 2){
+                if(y >= 5){
+                    for(int i = 0; i != 5; i++){
+                        if(computerMap.getItemAt(x,y-i).getName() != "W"){
+                            freeSpace = false;
+                        }
+                    }
+                    if(freeSpace){
+                        for(int i = 0; i != 5; i++){
+                            Item* aircraftCarrier = new Item(5, "A");
+                            computerMap.getItemAt(x, y - i) = *aircraftCarrier;
+                        }
+                    }
+                }
+                else{
+                    for(int i = 0; i != 5; i++){
+                        if(computerMap.getItemAt(x,y+i).getName() != "W"){
+                            freeSpace = false;
+                        }
+                    }
+                    if(freeSpace){
+                        for(int i = 0; i != 5; i++){
+                            Item* aircraftCarrier = new Item(5, "A");
+                            computerMap.getItemAt(x, y + i) = *aircraftCarrier;
+                        }
+                    }
+                }
+            }
+            //horizontal
+            else{
+                if(x >= 5){
+                    for(int i = 0; i != 5; i++){
+                        if(computerMap.getItemAt(x-i,y).getName() != "W"){
+                            freeSpace = false;
+                        }
+                    }
+                    if(freeSpace){
+                        for(int i = 0; i != 5; i++){
+                            Item* aircraftCarrier = new Item(5, "A");
+                            computerMap.getItemAt(x-i, y) = *aircraftCarrier;
+                        }
+                    }
+                }
+                else{
+                    for(int i = 0; i != 5; i++){
+                        if(computerMap.getItemAt(x-i,y).getName() != "W"){
+                            freeSpace = false;
+                        }
+                    }
+                    if(freeSpace){
+                        for(int i = 0; i != 5; i++){
+                            Item* aircraftCarrier = new Item(5, "A");
+                            computerMap.getItemAt(x-i, y) = *aircraftCarrier;
+                        }
+                    }
+                }
+            }
+        } while(!freeSpace);
+    }
+    
+    //ADD BATTLESHIP
+    if(!computerMap.containsItem("S")){
+        bool freeSpace = true;
+        do{
+            int x = rand() % 10;
+            int y = rand() % 10;
+            
+            
+            //vertical
+            if(rand() % 2){
+                if(y >= 4){
+                    for(int i = 0; i !=4; i++){
+                        if(computerMap.getItemAt(x,y-i).getName() != "W"){
+                            freeSpace = false;
+                        }
+                    }
+                    if(freeSpace){
+                        for(int i = 0; i != 4; i++){
+                            Item* battleship = new Item(5, "B");
+                            computerMap.getItemAt(x, y - i) = *battleship;
+                        }
+                    }
+                }
+                else{
+                    for(int i = 0; i != 4; i++){
+                        if(computerMap.getItemAt(x,y+i).getName() != "W"){
+                            freeSpace = false;
+                        }
+                    }
+                    if(freeSpace){
+                        for(int i = 0; i != 4; i++){
+                            Item* battleship = new Item(5, "B");
+                            computerMap.getItemAt(x, y + i) = *battleship;
+                        }
+                    }
+                }
+            }
+            //horizontal
+            else{
+                if(x >= 4){
+                    for(int i = 0; i != 4; i++){
+                        if(computerMap.getItemAt(x-i,y).getName() != "W"){
+                            freeSpace = false;
+                        }
+                    }
+                    if(freeSpace){
+                        for(int i = 0; i != 4; i++){
+                            Item* battleship = new Item(5, "B");
+                            computerMap.getItemAt(x-i, y) = *battleship;
+                        }
+                    }
+                }
+                else{
+                    for(int i = 0; i != 4; i++){
+                        if(computerMap.getItemAt(x-i,y).getName() != "W"){
+                            freeSpace = false;
+                        }
+                    }
+                    if(freeSpace){
+                        for(int i = 0; i != 4; i++){
+                            Item* battleship = new Item(4, "B");
+                            computerMap.getItemAt(x-i, y) = *battleship;
+                        }
+                    }
+                }
+            }
+        } while(!freeSpace);
+    }
+    
+    //ADD SUBMARINE
+    if(!computerMap.containsItem("S")){
+        bool freeSpace = true;
+        do{
+            int x = rand() % 10;
+            int y = rand() % 10;
+            
+            //vertical
+            if(rand() % 2){
+                if(y >= 3){
+                    for(int i = 0; i !=3; i++){
+                        if(computerMap.getItemAt(x,y-i).getName() != "W"){
+                            freeSpace = false;
+                        }
+                    }
+                    if(freeSpace){
+                        for(int i = 0; i != 3; i++){
+                            Item* submarine = new Item(5, "S");
+                            computerMap.getItemAt(x, y - i) = *submarine;
+                        }
+                    }
+                }
+                else{
+                    for(int i = 0; i != 3; i++){
+                        if(computerMap.getItemAt(x,y+i).getName() != "W"){
+                            freeSpace = false;
+                        }
+                    }
+                    if(freeSpace){
+                        for(int i = 0; i != 3; i++){
+                            Item* submarine = new Item(5, "S");
+                            computerMap.getItemAt(x, y + i) = *submarine;
+                        }
+                    }
+                }
+            }
+            //horizontal
+            else{
+                if(x >= 3){
+                    for(int i = 0; i != 3; i++){
+                        if(computerMap.getItemAt(x-i,y).getName() != "W"){
+                            freeSpace = false;
+                        }
+                    }
+                    if(freeSpace){
+                        for(int i = 0; i != 3; i++){
+                            Item* submarine = new Item(5, "S");
+                            computerMap.getItemAt(x-i, y) = *submarine;
+                        }
+                    }
+                }
+                else{
+                    for(int i = 0; i != 3; i++){
+                        if(computerMap.getItemAt(x-i,y).getName() != "W"){
+                            freeSpace = false;
+                        }
+                    }
+                    if(freeSpace){
+                        for(int i = 0; i != 3; i++){
+                            Item* submarine = new Item(3, "S");
+                            computerMap.getItemAt(x-i, y) = *submarine;
+                        }
+                    }
+                }
+            }
+        } while(!freeSpace);
+    }
+    
+    //ADD cruiser
+    if(!computerMap.containsItem("C")){
+        bool freeSpace = true;
+        do{
+            int x = rand() % 10;
+            int y = rand() % 10;
+            
+            
+            
+            //vertical
+            if(rand() % 2){
+                if(y >= 3){
+                    for(int i = 0; i !=3; i++){
+                        if(computerMap.getItemAt(x,y-i).getName() != "W"){
+                            freeSpace = false;
+                        }
+                    }
+                    if(freeSpace){
+                        for(int i = 0; i != 3; i++){
+                            Item* cruiser = new Item(5, "C");
+                            computerMap.getItemAt(x, y - i) = *cruiser;
+                        }
+                    }
+                }
+                else{
+                    for(int i = 0; i != 3; i++){
+                        if(computerMap.getItemAt(x,y+i).getName() != "W"){
+                            freeSpace = false;
+                        }
+                    }
+                    if(freeSpace){
+                        for(int i = 0; i != 3; i++){
+                            Item* cruiser = new Item(5, "C");
+                            computerMap.getItemAt(x, y + i) = *cruiser;
+                        }
+                    }
+                }
+            }
+            //horizontal
+            else{
+                if(x >= 3){
+                    for(int i = 0; i != 3; i++){
+                        if(computerMap.getItemAt(x-i,y).getName() != "W"){
+                            freeSpace = false;
+                        }
+                    }
+                    if(freeSpace){
+                        for(int i = 0; i != 3; i++){
+                            Item* cruiser = new Item(5, "C");
+                            computerMap.getItemAt(x-i, y) = *cruiser;
+                        }
+                    }
+                }
+                else{
+                    for(int i = 0; i != 3; i++){
+                        if(computerMap.getItemAt(x-i,y).getName() != "W"){
+                            freeSpace = false;
+                        }
+                    }
+                    if(freeSpace){
+                        for(int i = 0; i != 3; i++){
+                            Item* cruiser = new Item(3, "C");
+                            computerMap.getItemAt(x-i, y) = *cruiser;
+                        }
+                    }
+                }
+            }
+        } while(!freeSpace);
+    }
+    
+    //ADD destroyer
+    if(!computerMap.containsItem("D")){
+        bool freeSpace = true;
+        do{
+            int x = rand() % 10;
+            int y = rand() % 10;
+            
+            
+            
+            //vertical
+            if(rand() % 2){
+                if(y >= 2){
+                    for(int i = 0; i !=2; i++){
+                        if(computerMap.getItemAt(x,y-i).getName() != "W"){
+                            freeSpace = false;
+                        }
+                    }
+                    if(freeSpace){
+                        for(int i = 0; i != 2; i++){
+                            Item* destroyer = new Item(5, "D");
+                            computerMap.getItemAt(x, y - i) = *destroyer;
+                        }
+                    }
+                }
+                else{
+                    for(int i = 0; i != 2; i++){
+                        if(computerMap.getItemAt(x,y+i).getName() != "W"){
+                            freeSpace = false;
+                        }
+                    }
+                    if(freeSpace){
+                        for(int i = 0; i != 2; i++){
+                            Item* destroyer = new Item(5, "D");
+                            computerMap.getItemAt(x, y + i) = *destroyer;
+                        }
+                    }
+                }
+            }
+            //horizontal
+            else{
+                if(x >= 2){
+                    for(int i = 0; i != 2; i++){
+                        if(computerMap.getItemAt(x-i,y).getName() != "W"){
+                            freeSpace = false;
+                        }
+                    }
+                    if(freeSpace){
+                        for(int i = 0; i != 2; i++){
+                            Item* destroyer = new Item(5, "D");
+                            computerMap.getItemAt(x-i, y) = *destroyer;
+                        }
+                    }
+                }
+                else{
+                    for(int i = 0; i != 2; i++){
+                        if(computerMap.getItemAt(x-i,y).getName() != "W"){
+                            freeSpace = false;
+                        }
+                    }
+                    if(freeSpace){
+                        for(int i = 0; i != 2; i++){
+                            Item* destroyer = new Item(2, "D");
+                            computerMap.getItemAt(x-i, y) = *destroyer;
+                        }
+                    }
+                }
+            }
+        } while(!freeSpace);
+    }
+}
+
 
 int main(int argc, char ** argv){
   	string fileLoad;
@@ -194,8 +544,10 @@ int main(int argc, char ** argv){
 		}
 	}
 
-	map* userMap = new map();
-    computerGuess(*userMap);
+    Map* userMap = new Map();
+    Map* computerMap = new Map();
+    generateShips(*computerMap);
+    computerGuess(*userMap, 0, 0);
     //put stuff here!
     
     
