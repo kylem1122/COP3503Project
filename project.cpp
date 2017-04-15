@@ -199,5 +199,14 @@ int main(int argc, char ** argv){
     //put stuff here!
     
     
+	//write to file at end of program
+    ofstream out("likelihood.txt");
+    for (int i = 0; i < 10; i++){
+        for(int j = 0; j < 10; j++){
+            out << chanceArray[i][j] << " ";
+        }
+        out << endl;
+    }
+	
     return 0; 
 }
