@@ -4,6 +4,7 @@
 #include <iostream>
 #include <cstdlib>
 #include <iomanip>
+#include <ctime>
 #include "project.h"
 
 using namespace std;
@@ -33,21 +34,26 @@ bool checkExistence(Map& map, Item& item){
 
 //menu method
 int menu(){
-    cout<< endl << "Welcome to War Boats"<< endl;
     int selection = 0;
+    bool tryAgain;
     do{
+        tryAgain = false;
         cout<< endl << "Please select an option:"<< endl;
         cout<< "1 - Start Game "<< endl;
         cout<< "2 - Place Pieces" << endl;
         cout<< "3 - Modify Pieces "<< endl;
         cout<< "4 - Print Current Map" << endl;
         cout<< "5 - Exit "<< endl;
-        cin>> selection;
-        if(cin.fail() || selection > 5 || selection < 1){
+        if(!(cin >> selection)){
+            cout << endl << "ERROR: Invalid selection. Try again." << endl;
             cin.clear();
-            cout << "ERROR: Invalid selection. Try again." << endl << endl;
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
         }
-    }while(cin.fail() || selection > 5 || selection < 1);
+        else if(selection > 5 || selection < 1){
+            cout << endl << "ERROR: Invalid selection. Try again." << endl;
+            tryAgain = true;
+        }
+    }while(tryAgain);
     return selection;
 }
 
@@ -129,7 +135,7 @@ void userAddShip(Map& userMap){
                         }
                         
                         for(int i = 0; i != 5; i++){
-                            if(userMap.getItemAt(row,column+i).getName() != "W"){
+                            if(userMap.getItemAt(row,column+i).getName() != "~"){
                                 cout << "Another ship is already here" << endl;
                                 return;
                             }
@@ -170,7 +176,7 @@ void userAddShip(Map& userMap){
                         }
                         
                         for(int i = 0; i != 5; i++){
-                            if(userMap.getItemAt(row+i,column).getName() != "W"){
+                            if(userMap.getItemAt(row+i,column).getName() != "~"){
                                 cout << "Another ship is already here" << endl;
                                 return;
                             }
@@ -242,7 +248,7 @@ void userAddShip(Map& userMap){
                         }
                         
                         for(int i = 0; i != 4; i++){
-                            if(userMap.getItemAt(row,column+i).getName() != "W"){
+                            if(userMap.getItemAt(row,column+i).getName() != "~"){
                                 cout << "Another ship is already here" << endl;
                                 return;
                             }
@@ -283,7 +289,7 @@ void userAddShip(Map& userMap){
                         }
                         
                         for(int i = 0; i != 4; i++){
-                            if(userMap.getItemAt(row+i,column).getName() != "W"){
+                            if(userMap.getItemAt(row+i,column).getName() != "~"){
                                 cout << "Another ship is already here" << endl;
                                 return;
                             }
@@ -358,7 +364,7 @@ void userAddShip(Map& userMap){
                         }
                         
                         for(int i = 0; i != 3; i++){
-                            if(userMap.getItemAt(row,column+i).getName() != "W"){
+                            if(userMap.getItemAt(row,column+i).getName() != "~"){
                                 cout << "Another ship is already here" << endl;
                                 return;
                             }
@@ -399,7 +405,7 @@ void userAddShip(Map& userMap){
                         }
                         
                         for(int i = 0; i != 3; i++){
-                            if(userMap.getItemAt(row+i,column).getName() != "W"){
+                            if(userMap.getItemAt(row+i,column).getName() != "~"){
                                 cout << "Another ship is already here" << endl;
                                 return;
                             }
@@ -473,7 +479,7 @@ void userAddShip(Map& userMap){
                         }
                         
                         for(int i = 0; i != 3; i++){
-                            if(userMap.getItemAt(row,column+i).getName() != "W"){
+                            if(userMap.getItemAt(row,column+i).getName() != "~"){
                                 cout << "Another ship is already here" << endl;
                                 return;
                             }
@@ -514,7 +520,7 @@ void userAddShip(Map& userMap){
                         }
                         
                         for(int i = 0; i != 3; i++){
-                            if(userMap.getItemAt(row+i,column).getName() != "W"){
+                            if(userMap.getItemAt(row+i,column).getName() != "~"){
                                 cout << "Another ship is already here" << endl;
                                 return;
                             }
@@ -588,7 +594,7 @@ void userAddShip(Map& userMap){
                         }
                         
                         for(int i = 0; i != 2; i++){
-                            if(userMap.getItemAt(row,column+i).getName() != "W"){
+                            if(userMap.getItemAt(row,column+i).getName() != "~"){
                                 cout << "Another ship is already here" << endl;
                                 return;
                             }
@@ -629,7 +635,7 @@ void userAddShip(Map& userMap){
                         }
                         
                         for(int i = 0; i != 2; i++){
-                            if(userMap.getItemAt(row+i,column).getName() != "W"){
+                            if(userMap.getItemAt(row+i,column).getName() != "~"){
                                 cout << "Another ship is already here" << endl;
                                 return;
                             }
@@ -665,7 +671,6 @@ void userAddShip(Map& userMap){
         }
     }while(choice == "yes");
 }
-
 
 bool previousHit = false;
 int chanceArray [10][10];
@@ -790,6 +795,7 @@ bool computerGuess(Map& userMap, int x, int y){
 }
 
 void generateShips(Map& computerMap){
+    srand(static_cast<unsigned int>(time(NULL)));
     
     //ADD AIRCRAFT CARRIER
     if(!computerMap.containsItem("A")){
@@ -804,27 +810,27 @@ void generateShips(Map& computerMap){
             if(rand() % 2){
                 if(y > 5){
                     for(int i = 0; i != 5; i++){
-                        if(computerMap.getItemAt(x,y-i).getName() != "W"){
+                        if(computerMap.getItemAt(x,y-i).getName() != "~"){
                             freeSpace = false;
                         }
                     }
                     if(freeSpace){
                         for(int i = 0; i != 5; i++){
                             Item* aircraftCarrier = new Item(5, "A");
-                            computerMap.getItemAt(x, y - i) = *aircraftCarrier;
+                            computerMap.setItemAt(x, y - i, *aircraftCarrier);
                         }
                     }
                 }
                 else{
                     for(int i = 0; i != 5; i++){
-                        if(computerMap.getItemAt(x,y+i).getName() != "W"){
+                        if(computerMap.getItemAt(x,y+i).getName() != "~"){
                             freeSpace = false;
                         }
                     }
                     if(freeSpace){
                         for(int i = 0; i != 5; i++){
                             Item* aircraftCarrier = new Item(5, "A");
-                            computerMap.getItemAt(x, y + i) = *aircraftCarrier;
+                            computerMap.setItemAt(x, y + i, *aircraftCarrier);
                         }
                     }
                 }
@@ -833,27 +839,27 @@ void generateShips(Map& computerMap){
             else{
                 if(x > 5){
                     for(int i = 0; i != 5; i++){
-                        if(computerMap.getItemAt(x-i,y).getName() != "W"){
+                        if(computerMap.getItemAt(x-i,y).getName() != "~"){
                             freeSpace = false;
                         }
                     }
                     if(freeSpace){
                         for(int i = 0; i != 5; i++){
                             Item* aircraftCarrier = new Item(5, "A");
-                            computerMap.getItemAt(x-i, y) = *aircraftCarrier;
+                            computerMap.setItemAt(x-i, y, *aircraftCarrier);
                         }
                     }
                 }
                 else{
                     for(int i = 0; i != 5; i++){
-                        if(computerMap.getItemAt(x-i,y).getName() != "W"){
+                        if(computerMap.getItemAt(x-i,y).getName() != "~"){
                             freeSpace = false;
                         }
                     }
                     if(freeSpace){
                         for(int i = 0; i != 5; i++){
                             Item* aircraftCarrier = new Item(5, "A");
-                            computerMap.getItemAt(x-i, y) = *aircraftCarrier;
+                            computerMap.setItemAt(x-i, y, *aircraftCarrier);
                         }
                     }
                 }
@@ -873,27 +879,27 @@ void generateShips(Map& computerMap){
             if(rand() % 2){
                 if(y > 4){
                     for(int i = 0; i !=4; i++){
-                        if(computerMap.getItemAt(x,y-i).getName() != "W"){
+                        if(computerMap.getItemAt(x,y-i).getName() != "~"){
                             freeSpace = false;
                         }
                     }
                     if(freeSpace){
                         for(int i = 0; i != 4; i++){
                             Item* battleship = new Item(5, "B");
-                            computerMap.getItemAt(x, y - i) = *battleship;
+                            computerMap.setItemAt(x, y - i, *battleship);
                         }
                     }
                 }
                 else{
                     for(int i = 0; i != 4; i++){
-                        if(computerMap.getItemAt(x,y+i).getName() != "W"){
+                        if(computerMap.getItemAt(x,y+i).getName() != "~"){
                             freeSpace = false;
                         }
                     }
                     if(freeSpace){
                         for(int i = 0; i != 4; i++){
                             Item* battleship = new Item(5, "B");
-                            computerMap.getItemAt(x, y + i) = *battleship;
+                            computerMap.setItemAt(x, y + i, *battleship);
                         }
                     }
                 }
@@ -902,27 +908,27 @@ void generateShips(Map& computerMap){
             else{
                 if(x > 4){
                     for(int i = 0; i != 4; i++){
-                        if(computerMap.getItemAt(x-i,y).getName() != "W"){
+                        if(computerMap.getItemAt(x-i,y).getName() != "~"){
                             freeSpace = false;
                         }
                     }
                     if(freeSpace){
                         for(int i = 0; i != 4; i++){
                             Item* battleship = new Item(5, "B");
-                            computerMap.getItemAt(x-i, y) = *battleship;
+                            computerMap.setItemAt(x-i, y, *battleship);
                         }
                     }
                 }
                 else{
                     for(int i = 0; i != 4; i++){
-                        if(computerMap.getItemAt(x-i,y).getName() != "W"){
+                        if(computerMap.getItemAt(x-i,y).getName() != "~"){
                             freeSpace = false;
                         }
                     }
                     if(freeSpace){
                         for(int i = 0; i != 4; i++){
                             Item* battleship = new Item(4, "B");
-                            computerMap.getItemAt(x-i, y) = *battleship;
+                            computerMap.setItemAt(x-i, y, *battleship);
                         }
                     }
                 }
@@ -941,27 +947,27 @@ void generateShips(Map& computerMap){
             if(rand() % 2){
                 if(y > 3){
                     for(int i = 0; i !=3; i++){
-                        if(computerMap.getItemAt(x,y-i).getName() != "W"){
+                        if(computerMap.getItemAt(x,y-i).getName() != "~"){
                             freeSpace = false;
                         }
                     }
                     if(freeSpace){
                         for(int i = 0; i != 3; i++){
                             Item* submarine = new Item(5, "S");
-                            computerMap.getItemAt(x, y - i) = *submarine;
+                            computerMap.setItemAt(x, y - i, *submarine);
                         }
                     }
                 }
                 else{
                     for(int i = 0; i != 3; i++){
-                        if(computerMap.getItemAt(x,y+i).getName() != "W"){
+                        if(computerMap.getItemAt(x,y+i).getName() != "~"){
                             freeSpace = false;
                         }
                     }
                     if(freeSpace){
                         for(int i = 0; i != 3; i++){
                             Item* submarine = new Item(5, "S");
-                            computerMap.getItemAt(x, y + i) = *submarine;
+                            computerMap.setItemAt(x, y + i, *submarine);
                         }
                     }
                 }
@@ -970,27 +976,27 @@ void generateShips(Map& computerMap){
             else{
                 if(x > 3){
                     for(int i = 0; i != 3; i++){
-                        if(computerMap.getItemAt(x-i,y).getName() != "W"){
+                        if(computerMap.getItemAt(x-i,y).getName() != "~"){
                             freeSpace = false;
                         }
                     }
                     if(freeSpace){
                         for(int i = 0; i != 3; i++){
                             Item* submarine = new Item(5, "S");
-                            computerMap.getItemAt(x-i, y) = *submarine;
+                            computerMap.setItemAt(x-i, y, *submarine);
                         }
                     }
                 }
                 else{
                     for(int i = 0; i != 3; i++){
-                        if(computerMap.getItemAt(x-i,y).getName() != "W"){
+                        if(computerMap.getItemAt(x-i,y).getName() != "~"){
                             freeSpace = false;
                         }
                     }
                     if(freeSpace){
                         for(int i = 0; i != 3; i++){
                             Item* submarine = new Item(3, "S");
-                            computerMap.getItemAt(x-i, y) = *submarine;
+                            computerMap.setItemAt(x-i, y, *submarine);
                         }
                     }
                 }
@@ -1011,27 +1017,27 @@ void generateShips(Map& computerMap){
             if(rand() % 2){
                 if(y > 3){
                     for(int i = 0; i !=3; i++){
-                        if(computerMap.getItemAt(x,y-i).getName() != "W"){
+                        if(computerMap.getItemAt(x,y-i).getName() != "~"){
                             freeSpace = false;
                         }
                     }
                     if(freeSpace){
                         for(int i = 0; i != 3; i++){
                             Item* cruiser = new Item(5, "C");
-                            computerMap.getItemAt(x, y - i) = *cruiser;
+                            computerMap.setItemAt(x, y - i, *cruiser);
                         }
                     }
                 }
                 else{
                     for(int i = 0; i != 3; i++){
-                        if(computerMap.getItemAt(x,y+i).getName() != "W"){
+                        if(computerMap.getItemAt(x,y+i).getName() != "~"){
                             freeSpace = false;
                         }
                     }
                     if(freeSpace){
                         for(int i = 0; i != 3; i++){
                             Item* cruiser = new Item(5, "C");
-                            computerMap.getItemAt(x, y + i) = *cruiser;
+                            computerMap.setItemAt(x, y + i, *cruiser);
                         }
                     }
                 }
@@ -1040,27 +1046,27 @@ void generateShips(Map& computerMap){
             else{
                 if(x > 3){
                     for(int i = 0; i != 3; i++){
-                        if(computerMap.getItemAt(x-i,y).getName() != "W"){
+                        if(computerMap.getItemAt(x-i,y).getName() != "~"){
                             freeSpace = false;
                         }
                     }
                     if(freeSpace){
                         for(int i = 0; i != 3; i++){
                             Item* cruiser = new Item(5, "C");
-                            computerMap.getItemAt(x-i, y) = *cruiser;
+                            computerMap.setItemAt(x-i, y, *cruiser);
                         }
                     }
                 }
                 else{
                     for(int i = 0; i != 3; i++){
-                        if(computerMap.getItemAt(x-i,y).getName() != "W"){
+                        if(computerMap.getItemAt(x-i,y).getName() != "~"){
                             freeSpace = false;
                         }
                     }
                     if(freeSpace){
                         for(int i = 0; i != 3; i++){
                             Item* cruiser = new Item(3, "C");
-                            computerMap.getItemAt(x-i, y) = *cruiser;
+                            computerMap.setItemAt(x-i, y, *cruiser);
                         }
                     }
                 }
@@ -1081,27 +1087,27 @@ void generateShips(Map& computerMap){
             if(rand() % 2){
                 if(y > 2){
                     for(int i = 0; i !=2; i++){
-                        if(computerMap.getItemAt(x,y-i).getName() != "W"){
+                        if(computerMap.getItemAt(x,y-i).getName() != "~"){
                             freeSpace = false;
                         }
                     }
                     if(freeSpace){
                         for(int i = 0; i != 2; i++){
                             Item* destroyer = new Item(5, "D");
-                            computerMap.getItemAt(x, y - i) = *destroyer;
+                            computerMap.setItemAt(x, y - i, *destroyer);
                         }
                     }
                 }
                 else{
                     for(int i = 0; i != 2; i++){
-                        if(computerMap.getItemAt(x,y+i).getName() != "W"){
+                        if(computerMap.getItemAt(x,y+i).getName() != "~"){
                             freeSpace = false;
                         }
                     }
                     if(freeSpace){
                         for(int i = 0; i != 2; i++){
                             Item* destroyer = new Item(5, "D");
-                            computerMap.getItemAt(x, y + i) = *destroyer;
+                            computerMap.setItemAt(x, y + i, *destroyer);
                         }
                     }
                 }
@@ -1110,27 +1116,27 @@ void generateShips(Map& computerMap){
             else{
                 if(x > 2){
                     for(int i = 0; i != 2; i++){
-                        if(computerMap.getItemAt(x-i,y).getName() != "W"){
+                        if(computerMap.getItemAt(x-i,y).getName() != "~"){
                             freeSpace = false;
                         }
                     }
                     if(freeSpace){
                         for(int i = 0; i != 2; i++){
                             Item* destroyer = new Item(5, "D");
-                            computerMap.getItemAt(x-i, y) = *destroyer;
+                            computerMap.setItemAt(x-i, y, *destroyer);
                         }
                     }
                 }
                 else{
                     for(int i = 0; i != 2; i++){
-                        if(computerMap.getItemAt(x-i,y).getName() != "W"){
+                        if(computerMap.getItemAt(x-i,y).getName() != "~"){
                             freeSpace = false;
                         }
                     }
                     if(freeSpace){
                         for(int i = 0; i != 2; i++){
                             Item* destroyer = new Item(2, "D");
-                            computerMap.getItemAt(x-i, y) = *destroyer;
+                            computerMap.setItemAt(x-i, y, *destroyer);
                         }
                     }
                 }
@@ -1141,7 +1147,6 @@ void generateShips(Map& computerMap){
 
 
 int main(int argc, char ** argv){
-     
     string fileLoad;
     transform(fileLoad.begin(), fileLoad.end(), fileLoad.begin(), ::tolower);
     
@@ -1203,7 +1208,8 @@ int main(int argc, char ** argv){
             }
         }
     }
-
+    
+    cout<< endl << "Welcome to War Boats!"<< endl;
     
     //Make maps
     Map* userMap = new Map();
@@ -1222,11 +1228,17 @@ int main(int argc, char ** argv){
         }
     }while(menuSelection != 5 && menuSelection != 1);
     
+    if(menuSelection == 5){
+        return 0;
+    }
+    if (menuSelection == 1){
+        generateShips(*computerMap);
+        computerMap->print();
+    }
     
-    generateShips(*computerMap);
+    
     computerGuess(*userMap, 0, 0);
     //put stuff here!
-    
     
     //write to file at end of program
     ofstream out("likelihood.txt");
@@ -1236,5 +1248,5 @@ int main(int argc, char ** argv){
         }
         out << endl;
     }
-    return 0; 
+    return 0;
 }
