@@ -3,10 +3,29 @@
 #include <sstream>
 #include <iostream>
 #include <cstdlib>
+#include <iomanip>
 #include "project.h"
 
 using namespace std;
 
+//menu method
+int menu(){
+    cout<< "Welcome to War Boats"<< endl << endl;
+    int selection = 0;
+    do{
+        cout<< "Please select an option:"<< endl;
+        cout<< "1 - Start Game "<< endl;
+        cout<< "2 - Place Pieces" << endl;
+        cout<< "3 - Modify Pieces "<< endl;
+        cout<< "4 - Exit "<< endl;
+        cin>> selection;
+        if(cin.fail() || selection > 4 || selection < 1){
+            cin.clear();
+            cout << "ERROR: Invalid selection. Try again." << endl << endl;
+        }
+    }while(cin.fail() || selection > 4 || selection < 1);
+    return selection;
+}
 
 bool previousHit = false;
 int chanceArray [10][10];
@@ -139,7 +158,7 @@ void generateShips(Map& computerMap){
             int x = rand() % 10;
             int y = rand() % 10;
             
-
+            
             
             //vertical
             if(rand() % 2){
@@ -482,24 +501,25 @@ void generateShips(Map& computerMap){
 
 
 int main(int argc, char ** argv){
-  	string fileLoad;
-  	transform(fileLoad.begin(), fileLoad.end(), fileLoad.begin(), ::tolower);
-
-	if (argc >= 2) {
-	    fileLoad = argv[1];
-	}
-	else {
-		cout << "Invalid choice. Try again." << endl;
-		return 1;
-	}
-	if(fileLoad != "erase" || fileLoad != "load"){
-		cout << "Invalid choice. Try again." << endl;
-		return 1;
-	}
-	
-	int chanceArray [10][10];
+    
+    string fileLoad;
+    transform(fileLoad.begin(), fileLoad.end(), fileLoad.begin(), ::tolower);
+    
+    if (argc >= 2) {
+        fileLoad = argv[1];
+    }
+    else {
+        cout << "Invalid choice. Try again." << endl;
+        return 1;
+    }
+    if(fileLoad != "erase" || fileLoad != "load"){
+        cout << "Invalid choice. Try again." << endl;
+        return 1;
+    }
+    
+    int chanceArray [10][10];
     //load file into array
-	if(fileLoad == "load"){
+    if(fileLoad == "load"){
         ifstream in;
         string file = "likelihood.txt";
         
@@ -535,23 +555,106 @@ int main(int argc, char ** argv){
         }
         
         in.close();
-	}
-	else{
-		for(int i = 0; i <10; i++){
-			for(int j = 0; j < 10; j++){
-				chanceArray[i][j] = 1;
-			}
-		}
-	}
-
+    }
+    else{
+        for(int i = 0; i <10; i++){
+            for(int j = 0; j < 10; j++){
+                chanceArray[i][j] = 1;
+            }
+        }
+    }
+    
+    
+    //Make maps
     Map* userMap = new Map();
     Map* computerMap = new Map();
+    int menuSelection;
+    do{
+        menuSelection = menu();
+        if(menuSelection == 2){
+            string choice = "";
+            do{
+                const char separator    = ' ';
+                cout << endl <<"Your current board is:" << endl << endl;
+                userMap->print();
+                cout << endl << "Which ship would you like to place?" << endl << endl;
+                cout << left << setw(10) << setfill(separator) << "Symbol";
+                cout << left << setw(18) << setfill(separator) << "Name";
+                cout << left << setw(10) << setfill(separator) << "Length";
+                cout << endl;
+                cout << "-----------------------------------" << endl;
+                cout << left << setw(10) << setfill(separator) << "A";
+                cout << left << setw(18) << setfill(separator) << "Aircraft Carrier";
+                cout << left << setw(10) << setfill(separator) << "5";
+                cout << endl;
+                cout << left << setw(10) << setfill(separator) << "B";
+                cout << left << setw(18) << setfill(separator) << "Battleship";
+                cout << left << setw(10) << setfill(separator) << "4";
+                cout << endl;
+                cout << left << setw(10) << setfill(separator) << "S";
+                cout << left << setw(18) << setfill(separator) << "Submarine";
+                cout << left << setw(10) << setfill(separator) << "3";
+                cout << endl;
+                cout << left << setw(10) << setfill(separator) << "C";
+                cout << left << setw(18) << setfill(separator) << "Cruiser";
+                cout << left << setw(10) << setfill(separator) << "3";
+                cout << endl;
+                cout << left << setw(10) << setfill(separator) << "D";
+                cout << left << setw(18) << setfill(separator) << "Destroyer";
+                cout << left << setw(10) << setfill(separator) << "2";
+                cout << endl << endl << "Choose a symbol:";
+                cin >> choice;
+                transform(choice.begin(), choice.end(), choice.begin(), ::tolower);
+                
+                if(choice == "a"){
+                    cout << endl << endl << "You chose to add an Aircraft Carrier" << endl;
+                    cout << "The length of an Aircraft Carrier is 5" << endl;
+                    cout << "Which direction would you like your ship?" << endl;
+                    cout << "H - Horizontal" << endl;
+                    cout << "V - Vertical" << endl;
+                    transform(choice.begin(), choice.end(), choice.begin(), ::tolower);
+                    if (choice == "horizontal" || choice == "h"){
+                        
+                    }
+                    else if(choice == "vertical" || choice == "v"){
+                        
+                    }
+                    else{
+                        cout << endl << "ERROR: Invalid choice" << endl;
+                        choice = "no";
+                    }
+                    
+                }
+                else if(choice == "b"){
+                    
+                }
+                else if (choice == "s"){
+                    
+                }
+                else if (choice == "c"){
+                    
+                }
+                else if (choice == "d"){
+                    
+                }
+                else{
+                    cout << endl << "ERROR: Invalid choice" << endl;
+                    choice = "no";
+                }
+                
+            }while(choice != "no");        }
+        else if(menuSelection == 3){
+            //MODIFY SHIPS
+        }
+    }while(menuSelection != 4 && menuSelection != 1);
+    
+    
     generateShips(*computerMap);
     computerGuess(*userMap, 0, 0);
     //put stuff here!
     
     
-	//write to file at end of program
+    //write to file at end of program
     ofstream out("likelihood.txt");
     for (int i = 0; i < 10; i++){
         for(int j = 0; j < 10; j++){
@@ -559,6 +662,5 @@ int main(int argc, char ** argv){
         }
         out << endl;
     }
-	
     return 0; 
 }
