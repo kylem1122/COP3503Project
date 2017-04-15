@@ -57,14 +57,6 @@ class Map{
 public:
     Map();
     
-    void setType(string newtype) {
-        this->type = newtype;
-    }
-    
-    string getType() {
-        return type;
-    }
-    
     void setShip(int xIndex, int yIndex, Item ship) {
         board[xIndex][yIndex] = ship;
     }
@@ -81,6 +73,17 @@ public:
         return board[x][y];
     }
     
+    bool containsItem(string name){
+        for (int i = 0; i != 10; ++i) {
+            for (int j = 0; j != 10; ++j) {
+                if(board[i][j].getName() == name){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    
     void print() {
         Item temp;
         string tempName;
@@ -93,6 +96,7 @@ public:
         }
     }
 };
+
 
 //menu method
 int menu(){
