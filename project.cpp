@@ -31,10 +31,10 @@ int menu(){
 //LET THE USER ADD SHIPS
 void userAddShip(Map& userMap){
     string choice = "";
+    cout << endl <<"Your current board is:" << endl << endl;
+    userMap.print();
     do{
         const char separator    = ' ';
-        cout << endl <<"Your current board is:" << endl << endl;
-        userMap.print();
         cout << endl << "Which ship would you like to place?" << endl << endl;
         cout << left << setw(10) << setfill(separator) << "Symbol";
         cout << left << setw(18) << setfill(separator) << "Name";
@@ -74,7 +74,7 @@ void userAddShip(Map& userMap){
             cin >> choice;
             transform(choice.begin(), choice.end(), choice.begin(), ::tolower);
             if (choice == "horizontal" || choice == "h"){
-                cout << endl << endl << "Where would you like to place the farthest left edge? ";
+                cout << endl << "Where would you like to place the farthest left edge? ";
                 cin >> choice;
                 transform(choice.begin(), choice.end(), choice.begin(), ::tolower);
                 int column = 0;
@@ -108,7 +108,7 @@ void userAddShip(Map& userMap){
                         }
                         for(int i = 0; i != 5; i++){
                             Item* aircraftCarrier = new Item(5, "A");
-                            userMap.getItemAt(row, column+i) = *aircraftCarrier;
+                            userMap.setItemAt(row, column+i, *aircraftCarrier);
                         }
                         cout << endl << endl << "Your new map is: " << endl << endl;
                         userMap.print();
@@ -124,7 +124,7 @@ void userAddShip(Map& userMap){
                 }
             }
             else if(choice == "vertical" || choice == "v"){
-                cout << endl << endl << "Where would you like to place the topmost edge? ";
+                cout << endl << "Where would you like to place the topmost edge? ";
                 cin >> choice;
                 transform(choice.begin(), choice.end(), choice.begin(), ::tolower);
                 int column = 0;
@@ -138,7 +138,7 @@ void userAddShip(Map& userMap){
                             return;
                         }
                         else{
-                            row = choice[1] - '0';
+                            row = choice[1] - '0' - 1;
                         }
                         
                         for(int i = 0; i != 5; i++){
@@ -149,7 +149,7 @@ void userAddShip(Map& userMap){
                         }
                         for(int i = 0; i != 5; i++){
                             Item* aircraftCarrier = new Item(5, "A");
-                            userMap.getItemAt(row+i, column) = *aircraftCarrier;
+                            userMap.setItemAt(row+i, column, *aircraftCarrier);
                         }
                         cout << endl << endl << "Your new map is: " << endl << endl;
                         userMap.print();
@@ -168,7 +168,8 @@ void userAddShip(Map& userMap){
                 cout << endl << "ERROR: Invalid choice" << endl;
                 return;
             }
-            cout << "Would you like to add another piece? (yes/no) " << endl;
+            cout << "Would you like to add another piece? (yes/no) ";
+            cin >> choice;
             transform(choice.begin(), choice.end(), choice.begin(), ::tolower);
         }
         else if(choice == "b"){
@@ -181,7 +182,7 @@ void userAddShip(Map& userMap){
             cin >> choice;
             transform(choice.begin(), choice.end(), choice.begin(), ::tolower);
             if (choice == "horizontal" || choice == "h"){
-                cout << endl << endl << "Where would you like to place the farthest left edge? ";
+                cout << endl << "Where would you like to place the farthest left edge? ";
                 cin >> choice;
                 transform(choice.begin(), choice.end(), choice.begin(), ::tolower);
                 int column = 0;
@@ -204,7 +205,7 @@ void userAddShip(Map& userMap){
                             return;
                         }
                         else{
-                            row = choice[1] - '0';
+                            row = choice[1] - '0' - 1;
                         }
                         
                         for(int i = 0; i != 4; i++){
@@ -215,7 +216,7 @@ void userAddShip(Map& userMap){
                         }
                         for(int i = 0; i != 4; i++){
                             Item* battleship = new Item(4, "B");
-                            userMap.getItemAt(row, column+i) = *battleship;
+                            userMap.setItemAt(row, column+i, *battleship);
                         }
                         cout << endl << endl << "Your new map is: " << endl << endl;
                         userMap.print();
@@ -231,7 +232,7 @@ void userAddShip(Map& userMap){
                 }
             }
             else if(choice == "vertical" || choice == "v"){
-                cout << endl << endl << "Where would you like to place the topmost edge? ";
+                cout << endl << "Where would you like to place the topmost edge? ";
                 cin >> choice;
                 transform(choice.begin(), choice.end(), choice.begin(), ::tolower);
                 int column = 0;
@@ -245,7 +246,7 @@ void userAddShip(Map& userMap){
                             return;
                         }
                         else{
-                            row = choice[1] - '0';
+                            row = choice[1] - '0' - 1;
                         }
                         
                         for(int i = 0; i != 4; i++){
@@ -256,7 +257,7 @@ void userAddShip(Map& userMap){
                         }
                         for(int i = 0; i != 4; i++){
                             Item* battleship = new Item(4, "B");
-                            userMap.getItemAt(row+i, column) = *battleship;
+                            userMap.setItemAt(row+i, column, *battleship);
                         }
                         cout << endl << endl << "Your new map is: " << endl << endl;
                         userMap.print();
@@ -275,7 +276,8 @@ void userAddShip(Map& userMap){
                 cout << endl << "ERROR: Invalid choice" << endl;
                 return;
             }
-            cout << "Would you like to add another piece? (yes/no) " << endl;
+            cout << "Would you like to add another piece? (yes/no) ";
+            cin >> choice;
             transform(choice.begin(), choice.end(), choice.begin(), ::tolower);
             
         }
@@ -291,7 +293,7 @@ void userAddShip(Map& userMap){
             cin >> choice;
             transform(choice.begin(), choice.end(), choice.begin(), ::tolower);
             if (choice == "horizontal" || choice == "h"){
-                cout << endl << endl << "Where would you like to place the farthest left edge? ";
+                cout << endl << "Where would you like to place the farthest left edge? ";
                 cin >> choice;
                 transform(choice.begin(), choice.end(), choice.begin(), ::tolower);
                 int column = 0;
@@ -314,7 +316,7 @@ void userAddShip(Map& userMap){
                             return;
                         }
                         else{
-                            row = choice[1] - '0';
+                            row = choice[1] - '0' - 1;
                         }
                         
                         for(int i = 0; i != 3; i++){
@@ -325,7 +327,7 @@ void userAddShip(Map& userMap){
                         }
                         for(int i = 0; i != 3; i++){
                             Item* submarine = new Item(3, "S");
-                            userMap.getItemAt(row, column+i) = *submarine;
+                            userMap.setItemAt(row, column+i, *submarine);
                         }
                         cout << endl << endl << "Your new map is: " << endl << endl;
                         userMap.print();
@@ -341,7 +343,7 @@ void userAddShip(Map& userMap){
                 }
             }
             else if(choice == "vertical" || choice == "v"){
-                cout << endl << endl << "Where would you like to place the topmost edge? ";
+                cout << endl << "Where would you like to place the topmost edge? ";
                 cin >> choice;
                 transform(choice.begin(), choice.end(), choice.begin(), ::tolower);
                 int column = 0;
@@ -355,7 +357,7 @@ void userAddShip(Map& userMap){
                             return;
                         }
                         else{
-                            row = choice[1] - '0';
+                            row = choice[1] - '0' - 1;
                         }
                         
                         for(int i = 0; i != 3; i++){
@@ -366,7 +368,7 @@ void userAddShip(Map& userMap){
                         }
                         for(int i = 0; i != 3; i++){
                             Item* submarine = new Item(3, "S");
-                            userMap.getItemAt(row+i, column) = *submarine;
+                            userMap.setItemAt(row+i, column, *submarine);
                         }
                         cout << endl << endl << "Your new map is: " << endl << endl;
                         userMap.print();
@@ -385,7 +387,8 @@ void userAddShip(Map& userMap){
                 cout << endl << "ERROR: Invalid choice" << endl;
                 return;
             }
-            cout << "Would you like to add another piece? (yes/no) " << endl;
+            cout << "Would you like to add another piece? (yes/no) ";
+            cin >> choice;
             transform(choice.begin(), choice.end(), choice.begin(), ::tolower);
         }
         
@@ -400,7 +403,7 @@ void userAddShip(Map& userMap){
             cin >> choice;
             transform(choice.begin(), choice.end(), choice.begin(), ::tolower);
             if (choice == "horizontal" || choice == "h"){
-                cout << endl << endl << "Where would you like to place the farthest left edge? ";
+                cout << endl << "Where would you like to place the farthest left edge? ";
                 cin >> choice;
                 transform(choice.begin(), choice.end(), choice.begin(), ::tolower);
                 int column = 0;
@@ -423,7 +426,7 @@ void userAddShip(Map& userMap){
                             return;
                         }
                         else{
-                            row = choice[1] - '0';
+                            row = choice[1] - '0' - 1;
                         }
                         
                         for(int i = 0; i != 3; i++){
@@ -434,7 +437,7 @@ void userAddShip(Map& userMap){
                         }
                         for(int i = 0; i != 3; i++){
                             Item* cruiser = new Item(3, "C");
-                            userMap.getItemAt(row, column+i) = *cruiser;
+                            userMap.setItemAt(row, column+i, *cruiser);
                         }
                         cout << endl << endl << "Your new map is: " << endl << endl;
                         userMap.print();
@@ -450,7 +453,7 @@ void userAddShip(Map& userMap){
                 }
             }
             else if(choice == "vertical" || choice == "v"){
-                cout << endl << endl << "Where would you like to place the topmost edge? ";
+                cout << endl << "Where would you like to place the topmost edge? ";
                 cin >> choice;
                 transform(choice.begin(), choice.end(), choice.begin(), ::tolower);
                 int column = 0;
@@ -464,7 +467,7 @@ void userAddShip(Map& userMap){
                             return;
                         }
                         else{
-                            row = choice[1] - '0';
+                            row = choice[1] - '0' - 1;
                         }
                         
                         for(int i = 0; i != 3; i++){
@@ -475,7 +478,7 @@ void userAddShip(Map& userMap){
                         }
                         for(int i = 0; i != 3; i++){
                             Item* cruiser = new Item(3, "C");
-                            userMap.getItemAt(row+i, column) = *cruiser;
+                            userMap.setItemAt(row+i, column, *cruiser);
                         }
                         cout << endl << endl << "Your new map is: " << endl << endl;
                         userMap.print();
@@ -494,7 +497,8 @@ void userAddShip(Map& userMap){
                 cout << endl << "ERROR: Invalid choice" << endl;
                 return;
             }
-            cout << "Would you like to add another piece? (yes/no) " << endl;
+            cout << "Would you like to add another piece? (yes/no) ";
+            cin >> choice;
             transform(choice.begin(), choice.end(), choice.begin(), ::tolower);
         }
         
@@ -509,7 +513,7 @@ void userAddShip(Map& userMap){
             cin >> choice;
             transform(choice.begin(), choice.end(), choice.begin(), ::tolower);
             if (choice == "horizontal" || choice == "h"){
-                cout << endl << endl << "Where would you like to place the farthest left edge? ";
+                cout << endl << "Where would you like to place the farthest left edge? ";
                 cin >> choice;
                 transform(choice.begin(), choice.end(), choice.begin(), ::tolower);
                 int column = 0;
@@ -532,7 +536,7 @@ void userAddShip(Map& userMap){
                             return;
                         }
                         else{
-                            row = choice[1] - '0';
+                            row = choice[1] - '0' - 1;
                         }
                         
                         for(int i = 0; i != 2; i++){
@@ -543,7 +547,7 @@ void userAddShip(Map& userMap){
                         }
                         for(int i = 0; i != 2; i++){
                             Item* destroyer = new Item(3, "D");
-                            userMap.getItemAt(row, column+i) = *destroyer;
+                            userMap.setItemAt(row, column+i, *destroyer);
                         }
                         cout << endl << endl << "Your new map is: " << endl << endl;
                         userMap.print();
@@ -559,7 +563,7 @@ void userAddShip(Map& userMap){
                 }
             }
             else if(choice == "vertical" || choice == "v"){
-                cout << endl << endl << "Where would you like to place the topmost edge? ";
+                cout << endl << "Where would you like to place the topmost edge? ";
                 cin >> choice;
                 transform(choice.begin(), choice.end(), choice.begin(), ::tolower);
                 int column = 0;
@@ -573,7 +577,7 @@ void userAddShip(Map& userMap){
                             return;
                         }
                         else{
-                            row = choice[1] - '0';
+                            row = choice[1] - '0' - 1;
                         }
                         
                         for(int i = 0; i != 2; i++){
@@ -584,7 +588,7 @@ void userAddShip(Map& userMap){
                         }
                         for(int i = 0; i != 2; i++){
                             Item* destroyer = new Item(3, "D");
-                            userMap.getItemAt(row+i, column) = *destroyer;
+                            userMap.setItemAt(row+i, column, *destroyer);
                         }
                         cout << endl << endl << "Your new map is: " << endl << endl;
                         userMap.print();
@@ -603,14 +607,14 @@ void userAddShip(Map& userMap){
                 cout << endl << "ERROR: Invalid choice" << endl;
                 return;
             }
-            cout << "Would you like to add another piece? (yes/no) " << endl;
+            cout << "Would you like to add another piece? (yes/no) ";
+            cin >> choice;
             transform(choice.begin(), choice.end(), choice.begin(), ::tolower);
         }
         else{
             cout << endl << "ERROR: Invalid choice" << endl;
             choice = "no";
         }
-        
     }while(choice == "yes");
 }
 
