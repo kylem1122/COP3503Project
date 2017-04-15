@@ -12,15 +12,21 @@ protected:
 	string name;
 public:
 	Item();
-	Item(bool hit, int size, string name);
-	bool isHit(bool hit) {
+	Item(bool hit, int size, string name){
+		this->hit = hit;
+		this->size = size;
+		this->name = name;
+	};
 	
-	}
+	bool isHit() {
+        	return this->hit;
+   	}
+	
 	string getName() {
-		return name;
+		return this->name;
 	}
 	int getSize() {
-		return size;
+		return this->size;
 	}
 	void setName(string newName) {
 		name = newName;
