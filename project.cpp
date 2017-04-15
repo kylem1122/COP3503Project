@@ -143,7 +143,7 @@ void generateShips(Map& computerMap){
             
             //vertical
             if(rand() % 2){
-                if(y >= 5){
+                if(y > 5){
                     for(int i = 0; i != 5; i++){
                         if(computerMap.getItemAt(x,y-i).getName() != "W"){
                             freeSpace = false;
@@ -172,7 +172,7 @@ void generateShips(Map& computerMap){
             }
             //horizontal
             else{
-                if(x >= 5){
+                if(x > 5){
                     for(int i = 0; i != 5; i++){
                         if(computerMap.getItemAt(x-i,y).getName() != "W"){
                             freeSpace = false;
@@ -212,7 +212,7 @@ void generateShips(Map& computerMap){
             
             //vertical
             if(rand() % 2){
-                if(y >= 4){
+                if(y > 4){
                     for(int i = 0; i !=4; i++){
                         if(computerMap.getItemAt(x,y-i).getName() != "W"){
                             freeSpace = false;
@@ -241,7 +241,7 @@ void generateShips(Map& computerMap){
             }
             //horizontal
             else{
-                if(x >= 4){
+                if(x > 4){
                     for(int i = 0; i != 4; i++){
                         if(computerMap.getItemAt(x-i,y).getName() != "W"){
                             freeSpace = false;
@@ -280,7 +280,7 @@ void generateShips(Map& computerMap){
             
             //vertical
             if(rand() % 2){
-                if(y >= 3){
+                if(y > 3){
                     for(int i = 0; i !=3; i++){
                         if(computerMap.getItemAt(x,y-i).getName() != "W"){
                             freeSpace = false;
@@ -309,7 +309,7 @@ void generateShips(Map& computerMap){
             }
             //horizontal
             else{
-                if(x >= 3){
+                if(x > 3){
                     for(int i = 0; i != 3; i++){
                         if(computerMap.getItemAt(x-i,y).getName() != "W"){
                             freeSpace = false;
@@ -350,7 +350,7 @@ void generateShips(Map& computerMap){
             
             //vertical
             if(rand() % 2){
-                if(y >= 3){
+                if(y > 3){
                     for(int i = 0; i !=3; i++){
                         if(computerMap.getItemAt(x,y-i).getName() != "W"){
                             freeSpace = false;
@@ -379,7 +379,7 @@ void generateShips(Map& computerMap){
             }
             //horizontal
             else{
-                if(x >= 3){
+                if(x > 3){
                     for(int i = 0; i != 3; i++){
                         if(computerMap.getItemAt(x-i,y).getName() != "W"){
                             freeSpace = false;
@@ -420,7 +420,7 @@ void generateShips(Map& computerMap){
             
             //vertical
             if(rand() % 2){
-                if(y >= 2){
+                if(y > 2){
                     for(int i = 0; i !=2; i++){
                         if(computerMap.getItemAt(x,y-i).getName() != "W"){
                             freeSpace = false;
@@ -449,7 +449,7 @@ void generateShips(Map& computerMap){
             }
             //horizontal
             else{
-                if(x >= 2){
+                if(x > 2){
                     for(int i = 0; i != 2; i++){
                         if(computerMap.getItemAt(x-i,y).getName() != "W"){
                             freeSpace = false;
