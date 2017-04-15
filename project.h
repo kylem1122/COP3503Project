@@ -1,9 +1,9 @@
-#ifndef PROGRAM_H
-#define PROGRAM_H
+#ifndef PROJECT_H
+#define PROJECT_H
 
 //create classes
 #include <iostream>
-using namespace std; 
+using namespace std;
 
 class Item {
 protected:
@@ -51,32 +51,36 @@ public:
     }
 };
 
+
 class Map{
-    Item board[10][10];
+    Item* board[10][10];
     string type;
 public:
-    Map();
+    Map(){
+        setWater();
+    };
     
-    void setShip(int xIndex, int yIndex, Item ship) {
-        board[xIndex][yIndex] = ship;
+    void setShip(int xIndex, int yIndex, Item& ship) {
+        board[xIndex][yIndex] = &ship;
     }
     
     void setWater() {
         for (int i = 0; i != 10; ++i) {
             for (int j = 0; j != 10; ++j) {
-                board[j][i] = Item(0, "W");
+                Item* water = new Item(0, "W");
+                board[j][i] = water;
             }
         }
     }
     
     Item getItemAt(int x, int y){
-        return board[x][y];
+        return *board[x][y];
     }
     
     bool containsItem(string name){
         for (int i = 0; i != 10; ++i) {
             for (int j = 0; j != 10; ++j) {
-                if(board[i][j].getName() == name){
+                if(board[i][j]->getName() == name){
                     return true;
                 }
             }
@@ -85,50 +89,17 @@ public:
     }
     
     void print() {
-        Item temp;
-        string tempName;
         for (int i = 0; i != 10; ++i) {
-            for (int j = 0; j != 10; ++j) {
-                temp = board[j][i];
-                tempName = temp.getName();
-                cout << tempName << endl;
+            if(i == 0){
+                cout <<"\tA\tB\tC\tD\tE\tF\tG\tH\tI\tJ" << endl;
             }
+            cout << i + 1 << "\t";
+            for (int j = 0; j != 10; ++j) {
+                cout << board[i][j]->getName() << "\t";
+            }
+            cout << endl;
         }
     }
 };
-
-
-//menu method
-int menu(){
-    cout<< "Welcome to War Boats"<< endl;
-    int selection = 0;
-    while(selection > 4 || selection < 0){
-    cout<< "Please select an option"<< endl;
-    cout<< "1. Start Game "<< endl;
-    cout<< "2. Place Pieces" << endl;
-    cout<< "3. Modify Pieces "<< endl;
-    cout<< "4. Exit "<< endl;
-    cin>> selection;
-    }
-    return selection;
-}
-
-//guess checking method
-bool guess_check(int x, int y, int board[][]){
-    boo isHit = false;
-    if(board[x][y] == w){
-        cout<< "Miss" << endl;
-        return isHit;
-    }
-    else if(board[x][y] == s){
-        cout<< "Hit"<< endl;
-        isHit = true;
-        return isHit;
-    }
-    else{
-        cout<< "Invalid guess"<< endl;
-        return isHit;
-    }
-}
 
 #endif
