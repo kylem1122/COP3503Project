@@ -52,6 +52,11 @@ public:
 			}
 		}
 	}
+	
+	item getItemAt(int x, int y){
+        	return board[x][y];
+    	}
+	
 	void print() {
 		Item temp;
 		string tempName;
