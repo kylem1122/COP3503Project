@@ -142,7 +142,7 @@ void userAddShip(Map& userMap){
                             }
                         }
                         for(int i = 0; i != 5; i++){
-                            Item* aircraftCarrier = new Item(5, "A");
+                            Item* aircraftCarrier = new Item(5, "A", false);
                             userMap.setItemAt(row, column+i, *aircraftCarrier);
                         }
                         cout << endl << endl << "Your new map is: " << endl << endl;
@@ -183,7 +183,7 @@ void userAddShip(Map& userMap){
                             }
                         }
                         for(int i = 0; i != 5; i++){
-                            Item* aircraftCarrier = new Item(5, "A");
+                            Item* aircraftCarrier = new Item(5, "A", false);
                             userMap.setItemAt(row+i, column, *aircraftCarrier);
                         }
                         cout << endl << endl << "Your new map is: " << endl << endl;
@@ -255,7 +255,7 @@ void userAddShip(Map& userMap){
                             }
                         }
                         for(int i = 0; i != 4; i++){
-                            Item* battleship = new Item(4, "B");
+                            Item* battleship = new Item(4, "B", false);
                             userMap.setItemAt(row, column+i, *battleship);
                         }
                         cout << endl << endl << "Your new map is: " << endl << endl;
@@ -296,7 +296,7 @@ void userAddShip(Map& userMap){
                             }
                         }
                         for(int i = 0; i != 4; i++){
-                            Item* battleship = new Item(4, "B");
+                            Item* battleship = new Item(4, "B", false);
                             userMap.setItemAt(row+i, column, *battleship);
                         }
                         cout << endl << endl << "Your new map is: " << endl << endl;
@@ -371,7 +371,7 @@ void userAddShip(Map& userMap){
                             }
                         }
                         for(int i = 0; i != 3; i++){
-                            Item* submarine = new Item(3, "S");
+                            Item* submarine = new Item(3, "S", false);
                             userMap.setItemAt(row, column+i, *submarine);
                         }
                         cout << endl << endl << "Your new map is: " << endl << endl;
@@ -412,7 +412,7 @@ void userAddShip(Map& userMap){
                             }
                         }
                         for(int i = 0; i != 3; i++){
-                            Item* submarine = new Item(3, "S");
+                            Item* submarine = new Item(3, "S", false);
                             userMap.setItemAt(row+i, column, *submarine);
                         }
                         cout << endl << endl << "Your new map is: " << endl << endl;
@@ -486,7 +486,7 @@ void userAddShip(Map& userMap){
                             }
                         }
                         for(int i = 0; i != 3; i++){
-                            Item* cruiser = new Item(3, "C");
+                            Item* cruiser = new Item(3, "C", false);
                             userMap.setItemAt(row, column+i, *cruiser);
                         }
                         cout << endl << endl << "Your new map is: " << endl << endl;
@@ -527,7 +527,7 @@ void userAddShip(Map& userMap){
                             }
                         }
                         for(int i = 0; i != 3; i++){
-                            Item* cruiser = new Item(3, "C");
+                            Item* cruiser = new Item(3, "C", false);
                             userMap.setItemAt(row+i, column, *cruiser);
                         }
                         cout << endl << endl << "Your new map is: " << endl << endl;
@@ -601,7 +601,7 @@ void userAddShip(Map& userMap){
                             }
                         }
                         for(int i = 0; i != 2; i++){
-                            Item* destroyer = new Item(3, "D");
+                            Item* destroyer = new Item(3, "D", false);
                             userMap.setItemAt(row, column+i, *destroyer);
                         }
                         cout << endl << endl << "Your new map is: " << endl << endl;
@@ -642,7 +642,7 @@ void userAddShip(Map& userMap){
                             }
                         }
                         for(int i = 0; i != 2; i++){
-                            Item* destroyer = new Item(3, "D");
+                            Item* destroyer = new Item(3, "D", false);
                             userMap.setItemAt(row+i, column, *destroyer);
                         }
                         cout << endl << endl << "Your new map is: " << endl << endl;
@@ -679,32 +679,32 @@ int computer_x = 0;
 int computer_y = 0;
 
 bool computerGuess(Map& userMap){
-    bool hitShip = false;
+    srand(static_cast<unsigned int> (time(NULL)));
+    int max_x = 0;
+    int max_y = 0;
+    int max = 0;
     
     if(previousHit){
-        int max_x = 0;
-        int max_y = 0;
-        int max = 0;
         
-        if(!userMap.getItemAt(computer_x,computer_y-1).isHit() && chanceArray[computer_x][computer_y-1] > max){
+        if(!userMap.getItemAt(computer_x,computer_y-1).isHit() && chanceArray[computer_x][computer_y-1] > max && rand()%2){
             max_x = computer_x;
             max_y = computer_y-1;
             max = chanceArray[max_x][max_y];
         }
         
-        if(!userMap.getItemAt(computer_x,computer_y+1).isHit() && chanceArray[computer_x][computer_y+1] > max){
+        if(!userMap.getItemAt(computer_x,computer_y+1).isHit() && chanceArray[computer_x][computer_y+1] > max && rand()%2){
             max_x = computer_x;
             max_y = computer_y+1;
             max = chanceArray[max_x][max_y];
         }
         
-        if(!userMap.getItemAt(computer_x-1,computer_y).isHit() && chanceArray[computer_x-1][computer_y] > max){
+        if(!userMap.getItemAt(computer_x-1,computer_y).isHit() && chanceArray[computer_x-1][computer_y] > max && rand()%2){
             max_x = computer_x-1;
             max_y = computer_y;
             max = chanceArray[max_x][max_y];
         }
         
-        if(!userMap.getItemAt(computer_x+1,computer_y).isHit() && chanceArray[computer_x+1][computer_y] > max){
+        if(!userMap.getItemAt(computer_x+1,computer_y).isHit() && chanceArray[computer_x+1][computer_y] > max && rand()%2){
             max_x = computer_x+1;
             max_y = computer_y;
             max = chanceArray[max_x][max_y];
@@ -713,33 +713,9 @@ bool computerGuess(Map& userMap){
         if(max == 0){
             previousHit = false;
         }
-        
-        if(previousHit){
-            userMap.getItemAt(max_x, max_y).itemHit();
-            if(userMap.getItemAt(max_x, max_y).isShip()){
-                computer_x = max_x;
-                computer_y = max_y;
-                hitShip = true;
-                previousHit = true;
-                
-                for(int i = 0; i < 10; i++){
-                    for(int j = 0; j < 10; j++){
-                        if(i == max_x){
-                            chanceArray[i][j]++;
-                        }
-                        if(j == max_y){
-                            chanceArray[i][j]++;
-                        }
-                    }
-                }
-            }
-        }
     }
     
     if(!previousHit){
-        int max_x = 0;
-        int max_y = 0;
-        int max = 0;
         
         //find first open index
         for(int i = 0; i < 10; i++){
@@ -758,46 +734,90 @@ bool computerGuess(Map& userMap){
         for(int i = max_x; i < 10; i++){
             for(int j = 0; j <10; j++){
                 if(chanceArray[i][j] > max){
-                    if(rand()%2 && !userMap.getItemAt(i,j).isHit()){
+                    if(rand()%4 == 0 && !userMap.getItemAt(i,j).isHit()){
                         max_x = i;
                         max_y = j;
                         max = chanceArray[i][i];
                     }
                 }
                 else if(chanceArray[i][j] == max && !userMap.getItemAt(i,j).isHit()){
-                    if(rand()%2){
-                        if(rand()%2){
-                            if(rand()%2){
-                                max_x = i;
-                                max_y = j;
-                                max = chanceArray[i][i];
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        
-        userMap.getItemAt(max_x, max_y).itemHit();
-        if(userMap.getItemAt(max_x, max_y).isShip()){
-            hitShip = true;
-            previousHit = true;
-            computer_x = max_x;
-            computer_y = max_y;
-            
-            for(int i = 0; i < 10; i++){
-                for(int j = 0; j < 10; j++){
-                    if(i == max_x){
-                        chanceArray[i][j]++;
-                    }
-                    if(j == max_y){
-                        chanceArray[i][j]++;
+                    if(rand()%15 == 0){
+                        max_x = i;
+                        max_y = j;
+                        max = chanceArray[i][i];
                     }
                 }
             }
         }
     }
-    return hitShip;
+    
+    //fire
+    string name = userMap.getItemAt(max_x,max_y).getName();
+    userMap.getItemAt(max_x,max_y).itemHit();
+    if(userMap.getItemAt(max_x,max_y).isShip()){
+        previousHit = true;
+        computer_x = max_x;
+        computer_y = max_y;
+        
+        for(int i = 0; i < 10; i++){
+            for(int j = 0; j < 10; j++){
+                if(i == max_x){
+                    chanceArray[i][j]++;
+                }
+                if(j == max_y){
+                    chanceArray[i][j]++;
+                }
+            }
+        }
+        Item* hit = new Item(0, "X", true);
+        userMap.setItemAt(max_x,max_y,*hit);
+        
+        
+        if(checkExistence (userMap, userMap.getItemAt(max_x,max_y).getName())){
+            cout << "The computer hit your ";
+            if(name == "S"){
+                cout << "Submarine!" << endl;
+            }
+            else if(name == "A"){
+                cout << "Aircraft Carrier!" << endl;
+            }
+            else if(name == "B"){
+                cout << "Battleship!" << endl;
+            }
+            else if(name == "C"){
+                cout << "Cruiser!" << endl;
+            }
+            else if(name == "D"){
+                cout << "Destroyer!" << endl;
+            }
+        }
+        else{
+            cout << "The computer sunk your ";
+            if(name == "S"){
+                cout << "Submarine!" << endl;
+            }
+            else if(name == "A"){
+                cout << "Aircraft Carrier!" << endl;
+            }
+            else if(name == "B"){
+                cout << "Battleship!" << endl;
+            }
+            else if(name == "C"){
+                cout << "Cruiser!" << endl;
+            }
+            else if(name == "D"){
+                cout << "Destroyer!" << endl;
+            }
+        }
+        return true;
+    }
+    else{
+        cout << "The computer missed." << endl;
+        Item* hit = new Item(0, "O", true);
+        userMap.setItemAt(max_x,max_y,*hit);
+        previousHit = false;
+        return false;
+    }
 }
 
 void generateShips(Map& computerMap){
@@ -820,7 +840,7 @@ void generateShips(Map& computerMap){
                 }
                 if(freeSpace){
                     for(int i = 0; i != 5; i++){
-                        Item* aircraftCarrier = new Item(5, "A");
+                        Item* aircraftCarrier = new Item(5, "A", false);
                         computerMap.setItemAt(x, y + i, *aircraftCarrier);
                     }
                 }
@@ -837,7 +857,7 @@ void generateShips(Map& computerMap){
                 }
                 if(freeSpace){
                     for(int i = 0; i != 5; i++){
-                        Item* aircraftCarrier = new Item(5, "A");
+                        Item* aircraftCarrier = new Item(5, "A", false);
                         computerMap.setItemAt(x+i, y, *aircraftCarrier);
                     }
                 }
@@ -863,7 +883,7 @@ void generateShips(Map& computerMap){
                 }
                 if(freeSpace){
                     for(int i = 0; i != 4; i++){
-                        Item* battleship = new Item(4, "B");
+                        Item* battleship = new Item(4, "B", false);
                         computerMap.setItemAt(x, y+i, *battleship);
                     }
                 }
@@ -880,7 +900,7 @@ void generateShips(Map& computerMap){
                 }
                 if(freeSpace){
                     for(int i = 0; i != 4; i++){
-                        Item* battleship = new Item(4, "B");
+                        Item* battleship = new Item(4, "B", false);
                         computerMap.setItemAt(x+i, y, *battleship);
                     }
                 }
@@ -906,7 +926,7 @@ void generateShips(Map& computerMap){
                 }
                 if(freeSpace){
                     for(int i = 0; i != 3; i++){
-                        Item* submarine = new Item(3, "S");
+                        Item* submarine = new Item(3, "S", false);
                         computerMap.setItemAt(x, y+i, *submarine);
                     }
                 }
@@ -923,7 +943,7 @@ void generateShips(Map& computerMap){
                 }
                 if(freeSpace){
                     for(int i = 0; i != 3; i++){
-                        Item* submarine = new Item(3, "S");
+                        Item* submarine = new Item(3, "S", false);
                         computerMap.setItemAt(x+i, y, *submarine);
                     }
                 }
@@ -949,7 +969,7 @@ void generateShips(Map& computerMap){
                 }
                 if(freeSpace){
                     for(int i = 0; i != 3; i++){
-                        Item* cruiser = new Item(3, "C");
+                        Item* cruiser = new Item(3, "C", false);
                         computerMap.setItemAt(x, y+i, *cruiser);
                     }
                 }
@@ -966,7 +986,7 @@ void generateShips(Map& computerMap){
                 }
                 if(freeSpace){
                     for(int i = 0; i != 3; i++){
-                        Item* cruiser = new Item(3, "C");
+                        Item* cruiser = new Item(3, "C", false);
                         computerMap.setItemAt(x+i, y, *cruiser);
                     }
                 }
@@ -992,7 +1012,7 @@ void generateShips(Map& computerMap){
                 }
                 if(freeSpace){
                     for(int i = 0; i != 2; i++){
-                        Item* destroyer = new Item(2, "D");
+                        Item* destroyer = new Item(2, "D", false);
                         computerMap.setItemAt(x, y+i, *destroyer);
                     }
                 }
@@ -1009,7 +1029,7 @@ void generateShips(Map& computerMap){
                 }
                 if(freeSpace){
                     for(int i = 0; i != 2; i++){
-                        Item* destroyer = new Item(2, "D");
+                        Item* destroyer = new Item(2, "D", false);
                         computerMap.setItemAt(x+i, y, *destroyer);
                     }
                 }
@@ -1042,8 +1062,8 @@ bool userTurn(Map& computerMap, Map& userMap, int& moveCounter){
             transform(choice.begin(), choice.end(), choice.begin(), ::tolower);
             if(choice.size() == 2){
                 if(choice[0] >= 'a' && choice[0] <= 'j' && choice[1] > '0' && choice[1] <='9'){
-                    move_y = choice[1] - '0' - 1;
-                    move_x = choice[0] - 'a';
+                    move_x = choice[1] - '0' - 1;
+                    move_y = choice[0] - 'a';
                 }
                 else{
                     cout << "Invalid guess. Try again." << endl;
@@ -1071,8 +1091,9 @@ bool userTurn(Map& computerMap, Map& userMap, int& moveCounter){
     
     //fire
     string name = computerMap.getItemAt(move_x,move_y).getName();
-    computerMap.getItemAt(move_x,move_y).itemHit();
     if(computerMap.getItemAt(move_x,move_y).isShip()){
+        Item* hit = new Item(0, "X", true);
+        computerMap.setItemAt(move_x,move_y,*hit);
         if(checkExistence (computerMap, computerMap.getItemAt(move_x,move_y).getName())){
             cout << "You hit your opponent's ";
             if(name == "S"){
@@ -1112,6 +1133,8 @@ bool userTurn(Map& computerMap, Map& userMap, int& moveCounter){
         return true;
     }
     else{
+        Item* hit = new Item(0, "O", true);
+        computerMap.setItemAt(move_x,move_y,*hit);
         cout << "You missed." << endl;
         return false;
     }
