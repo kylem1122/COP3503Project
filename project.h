@@ -13,9 +13,10 @@ protected:
     string name;
 public:
     Item();
-    Item(int size, string name){
+    Item(int size, string name, bool hit){
         this->size = size;
         this->name = name;
+        this->hit = hit;
         if(name == "~"){
             shipOrNoShip = false;
         }
@@ -27,7 +28,12 @@ public:
     
     void itemHit(){
         this->hit = true;
-        this->name = "X";
+        if(this->isShip()){
+            this->name = "X";
+        }
+        else{
+            this->name = "O";
+        }
     }
     
     string getName() {
@@ -67,7 +73,7 @@ public:
     void setWater() {
         for (int i = 0; i != 10; ++i) {
             for (int j = 0; j != 10; ++j) {
-                Item* water = new Item(0, "~");
+                Item* water = new Item(0, "~", false);
                 board[j][i] = water;
             }
         }
@@ -96,11 +102,30 @@ public:
         for (int i = 0; i != 10; ++i) {
             if(i == 0){
                 cout <<"\t\tA\tB\tC\tD\tE\tF\tG\tH\tI\tJ" << endl;
-                cout <<"\t------------------------------------------" << endl;
+                cout <<"\t---------------------------------------------------------------------------------" << endl;
             }
             cout << i + 1 << "\t|\t";
             for (int j = 0; j != 10; ++j) {
                 cout << board[i][j]->getName() << "\t";
+            }
+            cout << endl;
+        }
+    }
+    
+    void printGameMap() {
+        for (int i = 0; i != 10; ++i) {
+            if(i == 0){
+                cout <<"\t\tA\tB\tC\tD\tE\tF\tG\tH\tI\tJ" << endl;
+                cout <<"\t---------------------------------------------------------------------------------" << endl;
+            }
+            cout << i + 1 << "\t|\t";
+            for (int j = 0; j != 10; ++j) {
+                if(board[i][j]->isShip() && !board[i][j]->isHit()){
+                    cout << "~" << "\t";
+                }
+                else{
+                    cout << board[i][j]->getName() << "\t";
+                }
             }
             cout << endl;
         }
