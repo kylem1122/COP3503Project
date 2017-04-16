@@ -5,6 +5,7 @@
 #include <cstdlib>
 #include <iomanip>
 #include <ctime>
+#include <algorithm>
 #include "project.h"
 
 using namespace std;
@@ -37,7 +38,6 @@ int menu(){
         if(!(cin >> selection)){
             cout << endl << "ERROR: Invalid selection. Try again." << endl;
             cin.clear();
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
         }
         else if(selection > 6 || selection < 1){
             cout << endl << "ERROR: Invalid selection. Try again." << endl;
