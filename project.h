@@ -99,32 +99,55 @@ public:
     }
     
     void print() {
+        
+        const char separator    = ' ';
         for (int i = 0; i != 10; ++i) {
             if(i == 0){
-                cout <<"\t\tA\tB\tC\tD\tE\tF\tG\tH\tI\tJ" << endl;
-                cout <<"\t---------------------------------------------------------------------------------" << endl;
+                cout << right << setw(12) << setfill(separator) << "A";
+                cout << right << setw(4) << setfill(separator) << "B";
+                cout << right << setw(4) << setfill(separator) << "C";
+                cout << right << setw(4) << setfill(separator) << "D";
+                cout << right << setw(4) << setfill(separator) << "E";
+                cout << right << setw(4) << setfill(separator) << "F";
+                cout << right << setw(4) << setfill(separator) << "G";
+                cout << right << setw(4) << setfill(separator) << "H";
+                cout << right << setw(4) << setfill(separator) << "I";
+                cout << right << setw(4) << setfill(separator) << "J" << endl;
+                cout << right << setw(8) << setfill(separator) << "---------------------------------------------------" << endl;
             }
-            cout << i + 1 << "\t|\t";
+            cout << right << setw(4) << setfill(separator) << i+1;
+            cout << right << setw(4) << setfill(separator) << "|";
             for (int j = 0; j != 10; ++j) {
-                cout << board[i][j]->getName() << "\t";
+                cout << right << setw(4) << setfill(separator) << board[i][j]->getName();
             }
             cout << endl;
         }
     }
     
     void printGameMap() {
+        const char separator    = ' ';
         for (int i = 0; i != 10; ++i) {
             if(i == 0){
-                cout <<"\t\tA\tB\tC\tD\tE\tF\tG\tH\tI\tJ" << endl;
-                cout <<"\t---------------------------------------------------------------------------------" << endl;
+                cout << right << setw(12) << setfill(separator) << "A";
+                cout << right << setw(4) << setfill(separator) << "B";
+                cout << right << setw(4) << setfill(separator) << "C";
+                cout << right << setw(4) << setfill(separator) << "D";
+                cout << right << setw(4) << setfill(separator) << "E";
+                cout << right << setw(4) << setfill(separator) << "F";
+                cout << right << setw(4) << setfill(separator) << "G";
+                cout << right << setw(4) << setfill(separator) << "H";
+                cout << right << setw(4) << setfill(separator) << "I";
+                cout << right << setw(4) << setfill(separator) << "J" << endl;
+                cout << right << setw(8) << setfill(separator) << "---------------------------------------------------" << endl;
             }
-            cout << i + 1 << "\t|\t";
+            cout << right << setw(4) << setfill(separator) << i+1;
+            cout << right << setw(4) << setfill(separator) << "|";
             for (int j = 0; j != 10; ++j) {
                 if(board[i][j]->isShip() && !board[i][j]->isHit()){
-                    cout << "~" << "\t";
+                    cout << right << setw(4) << setfill(separator) << "~";
                 }
                 else{
-                    cout << board[i][j]->getName() << "\t";
+                    cout << right << setw(4) << setfill(separator) << board[i][j]->getName();
                 }
             }
             cout << endl;
