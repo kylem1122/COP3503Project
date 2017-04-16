@@ -21,17 +21,6 @@ bool checkExistence(Map& map, string item){
     return false;
 }
 
-bool checkExistence(Map& map, Item& item){
-    for(int i = 0; i < 10; i++){
-        for(int j = 0; j < 10; j++){
-            if(map.getItemAt(i,j).getName() == item.getName()){
-                return true;
-            }
-        }
-    }
-    return false;
-}
-
 //menu method
 int menu(){
     int selection = 0;
@@ -50,7 +39,7 @@ int menu(){
             cin.clear();
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
         }
-        else if(selection > 5 || selection < 1){
+        else if(selection > 6 || selection < 1){
             cout << endl << "ERROR: Invalid selection. Try again." << endl;
             tryAgain = true;
         }
@@ -679,35 +668,39 @@ int computer_x = 0;
 int computer_y = 0;
 
 bool computerGuess(Map& userMap){
-    srand(static_cast<unsigned int> (time(NULL)));
     int max_x = 0;
     int max_y = 0;
     int max = 0;
     
     if(previousHit){
         
-        if(!userMap.getItemAt(computer_x,computer_y-1).isHit() && chanceArray[computer_x][computer_y-1] > max && rand()%2){
-            max_x = computer_x;
-            max_y = computer_y-1;
-            max = chanceArray[max_x][max_y];
+        if(computer_x != 9){
+            if(!userMap.getItemAt(computer_x+1,computer_y).isHit() && chanceArray[computer_x+1][computer_y] > max && rand()%2){
+                max_x = computer_x+1;
+                max_y = computer_y;
+                max = chanceArray[max_x][max_y];
+            }
         }
-        
-        if(!userMap.getItemAt(computer_x,computer_y+1).isHit() && chanceArray[computer_x][computer_y+1] > max && rand()%2){
-            max_x = computer_x;
-            max_y = computer_y+1;
-            max = chanceArray[max_x][max_y];
+        if(computer_x != 0){
+            if(!userMap.getItemAt(computer_x-1,computer_y).isHit() && chanceArray[computer_x-1][computer_y] > max && rand()%2){
+                max_x = computer_x-1;
+                max_y = computer_y;
+                max = chanceArray[max_x][max_y];
+            }
         }
-        
-        if(!userMap.getItemAt(computer_x-1,computer_y).isHit() && chanceArray[computer_x-1][computer_y] > max && rand()%2){
-            max_x = computer_x-1;
-            max_y = computer_y;
-            max = chanceArray[max_x][max_y];
+        if(computer_y != 9){
+            if(!userMap.getItemAt(computer_x,computer_y+1).isHit() && chanceArray[computer_x][computer_y+1] > max && rand()%2){
+                max_x = computer_x;
+                max_y = computer_y+1;
+                max = chanceArray[max_x][max_y];
+            }
         }
-        
-        if(!userMap.getItemAt(computer_x+1,computer_y).isHit() && chanceArray[computer_x+1][computer_y] > max && rand()%2){
-            max_x = computer_x+1;
-            max_y = computer_y;
-            max = chanceArray[max_x][max_y];
+        if(computer_y != 0){
+            if(!userMap.getItemAt(computer_x,computer_y-1).isHit() && chanceArray[computer_x][computer_y-1] > max && rand()%2){
+                max_x = computer_x;
+                max_y = computer_y-1;
+                max = chanceArray[max_x][max_y];
+            }
         }
         
         if(max == 0){
@@ -717,37 +710,38 @@ bool computerGuess(Map& userMap){
     
     if(!previousHit){
         
-        //find first open index
-        for(int i = 0; i < 10; i++){
-            for(int j = 0; j < 10; j++){
-                if(!userMap.getItemAt(i,j).isHit()){
-                    max_x = i;
-                    max_y = j;
-                    max = chanceArray[i][j];
-                    break;
-                }
-            }
-        }
+        //find an open index
+        do{
+            max_x = rand()%10;
+            max_y = rand()%10;
+            max = chanceArray[max_x][max_y];
+        } while(userMap.getItemAt(max_x,max_y).isHit());
         
         
         //find max index
-        for(int i = max_x; i < 10; i++){
+        for(int i = 0; i < 10; i++){
             for(int j = 0; j <10; j++){
                 if(chanceArray[i][j] > max){
-                    if(rand()%4 == 0 && !userMap.getItemAt(i,j).isHit()){
+                    if(rand()%15 == 0 && !userMap.getItemAt(i,j).isHit() && chanceArray[i][j] != 1){
                         max_x = i;
                         max_y = j;
                         max = chanceArray[i][i];
                     }
                 }
-                else if(chanceArray[i][j] == max && !userMap.getItemAt(i,j).isHit()){
-                    if(rand()%15 == 0){
+                else if(chanceArray[i][j] == max && !userMap.getItemAt(i,j).isHit() && chanceArray[i][j] != 1){
+                    if(rand()%25 == 0){
                         max_x = i;
                         max_y = j;
                         max = chanceArray[i][i];
                     }
                 }
             }
+        }
+        if(max == 0){
+            do{
+                max_x = rand()%10;
+                max_y = rand()%10;
+            } while(userMap.getItemAt(max_x,max_y).isHit());
         }
     }
     
@@ -773,7 +767,7 @@ bool computerGuess(Map& userMap){
         userMap.setItemAt(max_x,max_y,*hit);
         
         
-        if(checkExistence (userMap, userMap.getItemAt(max_x,max_y).getName())){
+        if(checkExistence (userMap, name)){
             cout << "The computer hit your ";
             if(name == "S"){
                 cout << "Submarine!" << endl;
@@ -824,7 +818,6 @@ void generateShips(Map& computerMap){
     
     //ADD AIRCRAFT CARRIER
     if(!computerMap.containsItem("A")){
-        srand(static_cast<unsigned int> (time(NULL)));
         bool freeSpace;
         do{
             freeSpace = true;
@@ -867,7 +860,6 @@ void generateShips(Map& computerMap){
     
     //ADD BATTLESHIP
     if(!computerMap.containsItem("B")){
-        srand(static_cast<unsigned int> (time(NULL)));
         bool freeSpace;
         do{
             freeSpace = true;
@@ -910,7 +902,6 @@ void generateShips(Map& computerMap){
     
     //ADD SUBMARINE
     if(!computerMap.containsItem("S")){
-        srand(static_cast<unsigned int> (time(NULL)));
         bool freeSpace;
         do{
             freeSpace = true;
@@ -953,7 +944,6 @@ void generateShips(Map& computerMap){
     
     //ADD cruiser
     if(!computerMap.containsItem("C")){
-        srand(static_cast<unsigned int> (time(NULL)));
         bool freeSpace;
         do{
             freeSpace = true;
@@ -996,7 +986,6 @@ void generateShips(Map& computerMap){
     
     //ADD destroyer
     if(!computerMap.containsItem("D")){
-        srand(static_cast<unsigned int> (time(NULL)));
         bool freeSpace;
         do{
             freeSpace = true;
@@ -1045,6 +1034,13 @@ bool userTurn(Map& computerMap, Map& userMap, int& moveCounter){
     userMap.print();
     cout << endl << endl << "Computer's map:" << endl << endl;
     computerMap.printGameMap();
+    cout << endl << endl << "Chance Array:" << endl << endl;
+    for(int i = 0; i <10; i++){
+        for(int j = 0; j < 10; j++){
+            cout<< chanceArray[i][j] << " ";
+        }
+        cout << endl;
+    }
     cout << endl << endl << "Where would you like to make move " << moveCounter << "? ";
     
     //get valid move
@@ -1054,8 +1050,8 @@ bool userTurn(Map& computerMap, Map& userMap, int& moveCounter){
     bool invalidChoice;
     do{
         //make sure user input is valid
-        move_x = 0;
-        move_y = 0;
+        move_x = -1;
+        move_y = -1;
         invalidChoice = false;
         do{
             cin >> choice;
@@ -1071,8 +1067,8 @@ bool userTurn(Map& computerMap, Map& userMap, int& moveCounter){
             }
             else if(choice.size() == 3){
                 if(choice[0] >= 'a' && choice[0] <= 'j' && choice[2] == '0' && choice[1] == '1'){
-                    move_y = 9;
-                    move_x = choice[0] - 'a';
+                    move_x = 9;
+                    move_y = choice[0] - 'a';
                 }
                 else{
                     cout << "Invalid guess. Try again." << endl;
@@ -1081,11 +1077,12 @@ bool userTurn(Map& computerMap, Map& userMap, int& moveCounter){
             else{
                 cout << "Invalid guess. Try again." << endl;
             }
-        }while(move_x == 0 || move_y == 0);
+        }while(move_x < 0 || move_y < 0);
         
         //make sure spot hasn't already been hit before
         if(computerMap.getItemAt(move_x,move_y).isHit()){
             invalidChoice = true;
+            cout << "Invalid guess. Try again." << endl;
         }
     }while(invalidChoice);
     
@@ -1094,7 +1091,8 @@ bool userTurn(Map& computerMap, Map& userMap, int& moveCounter){
     if(computerMap.getItemAt(move_x,move_y).isShip()){
         Item* hit = new Item(0, "X", true);
         computerMap.setItemAt(move_x,move_y,*hit);
-        if(checkExistence (computerMap, computerMap.getItemAt(move_x,move_y).getName())){
+        
+        if(checkExistence (computerMap, name)){
             cout << "You hit your opponent's ";
             if(name == "S"){
                 cout << "Submarine!" << endl;
@@ -1142,6 +1140,7 @@ bool userTurn(Map& computerMap, Map& userMap, int& moveCounter){
 
 
 int main(int argc, char ** argv){
+    srand(static_cast<unsigned int> (time(NULL)));
     string fileLoad;
     transform(fileLoad.begin(), fileLoad.end(), fileLoad.begin(), ::tolower);
     
@@ -1157,7 +1156,6 @@ int main(int argc, char ** argv){
         return 1;
     }
     
-    int chanceArray [10][10];
     //load file into array
     if(fileLoad == "load"){
         ifstream in;
@@ -1171,7 +1169,6 @@ int main(int argc, char ** argv){
         }
         
         int num;
-        int chanceArray [10][10];
         int a = 0;
         int b = 0;
         
@@ -1228,7 +1225,7 @@ int main(int argc, char ** argv){
         }
     }while(menuSelection != 6 && menuSelection != 1);
     
-    if(menuSelection == 5){
+    if(menuSelection == 6){
         return 0;
     }
     if (menuSelection == 1){
@@ -1250,14 +1247,14 @@ int main(int argc, char ** argv){
             if(userTurn(*computerMap, *userMap, moveCounter)){
                 if(!checkExistence(*computerMap, "A") && !checkExistence(*computerMap, "B") && !checkExistence(*computerMap, "C") && !checkExistence(*computerMap, "S") && !checkExistence(*computerMap, "D")){
                     cout << "Congratulations! You sunk all of your opponent's ships! You won!";
-                    continuePlaying = false;
+                    break;
                 }
             }
             if(computerGuess(*userMap)){
                 previousHit = true;
                 if(!checkExistence(*userMap, "A") && !checkExistence(*userMap, "B") && !checkExistence(*userMap, "C") && !checkExistence(*userMap, "S") && !checkExistence(*userMap, "D")){
                     cout << "Oh no! The computer sunk all of your ships! You lost. :(";
-                    continuePlaying = false;
+                    break;
                 }
             }
         }while(continuePlaying);
@@ -1274,5 +1271,6 @@ int main(int argc, char ** argv){
         }
         out << endl;
     }
+    out.close();
     return 0;
 }
