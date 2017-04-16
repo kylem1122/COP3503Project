@@ -675,9 +675,10 @@ void userAddShip(Map& userMap){
 
 bool previousHit = false;
 int chanceArray [10][10];
+int computer_x = 0;
+int computer_y = 0;
 
-
-bool computerGuess(Map& userMap, int x, int y){
+bool computerGuess(Map& userMap){
     bool hitShip = false;
     
     if(previousHit){
@@ -685,27 +686,27 @@ bool computerGuess(Map& userMap, int x, int y){
         int max_y = 0;
         int max = 0;
         
-        if(!userMap.getItemAt(x,y-1).isHit() && chanceArray[x][y-1] > max){
-            max_x = x;
-            max_y = y-1;
+        if(!userMap.getItemAt(computer_x,computer_y-1).isHit() && chanceArray[computer_x][computer_y-1] > max){
+            max_x = computer_x;
+            max_y = computer_y-1;
             max = chanceArray[max_x][max_y];
         }
         
-        if(!userMap.getItemAt(x,y+1).isHit() && chanceArray[x][y+1] > max){
-            max_x = x;
-            max_y = y+1;
+        if(!userMap.getItemAt(computer_x,computer_y+1).isHit() && chanceArray[computer_x][computer_y+1] > max){
+            max_x = computer_x;
+            max_y = computer_y+1;
             max = chanceArray[max_x][max_y];
         }
         
-        if(!userMap.getItemAt(x-1,y).isHit() && chanceArray[x-1][y] > max){
-            max_x = x-1;
-            max_y = y;
+        if(!userMap.getItemAt(computer_x-1,computer_y).isHit() && chanceArray[computer_x-1][computer_y] > max){
+            max_x = computer_x-1;
+            max_y = computer_y;
             max = chanceArray[max_x][max_y];
         }
         
-        if(!userMap.getItemAt(x+1,y).isHit() && chanceArray[x+1][y] > max){
-            max_x = x+1;
-            max_y = y;
+        if(!userMap.getItemAt(computer_x+1,computer_y).isHit() && chanceArray[computer_x+1][computer_y] > max){
+            max_x = computer_x+1;
+            max_y = computer_y;
             max = chanceArray[max_x][max_y];
         }
         
@@ -716,15 +717,17 @@ bool computerGuess(Map& userMap, int x, int y){
         if(previousHit){
             userMap.getItemAt(max_x, max_y).itemHit();
             if(userMap.getItemAt(max_x, max_y).isShip()){
+                computer_x = max_x;
+                computer_y = max_y;
                 hitShip = true;
                 previousHit = true;
                 
                 for(int i = 0; i < 10; i++){
                     for(int j = 0; j < 10; j++){
-                        if(i == x){
+                        if(i == max_x){
                             chanceArray[i][j]++;
                         }
-                        if(j == y){
+                        if(j == max_y){
                             chanceArray[i][j]++;
                         }
                     }
@@ -779,13 +782,15 @@ bool computerGuess(Map& userMap, int x, int y){
         if(userMap.getItemAt(max_x, max_y).isShip()){
             hitShip = true;
             previousHit = true;
+            computer_x = max_x;
+            computer_y = max_y;
             
             for(int i = 0; i < 10; i++){
                 for(int j = 0; j < 10; j++){
-                    if(i == x){
+                    if(i == max_x){
                         chanceArray[i][j]++;
                     }
-                    if(j == y){
+                    if(j == max_y){
                         chanceArray[i][j]++;
                     }
                 }
@@ -1013,69 +1018,168 @@ void generateShips(Map& computerMap){
     }
 }
 
+bool userTurn(Map& computerMap, Map& userMap, int& moveCounter){
+    //print maps
+    moveCounter++;
+    cout << "Your map: " << endl << endl;
+    userMap.print();
+    cout << endl << endl << "Computer's map:" << endl << endl;
+    computerMap.printGameMap();
+    cout << endl << endl << "Where would you like to make move " << moveCounter << "? ";
+    
+    //get valid move
+    string choice;
+    int move_x;
+    int move_y;
+    bool invalidChoice;
+    do{
+        //make sure user input is valid
+        move_x = 0;
+        move_y = 0;
+        invalidChoice = false;
+        do{
+            cin >> choice;
+            transform(choice.begin(), choice.end(), choice.begin(), ::tolower);
+            if(choice.size() == 2){
+                if(choice[0] >= 'a' && choice[0] <= 'j' && choice[1] > '0' && choice[1] <='9'){
+                    move_y = choice[1] - '0' - 1;
+                    move_x = choice[0] - 'a';
+                }
+                else{
+                    cout << "Invalid guess. Try again." << endl;
+                }
+            }
+            else if(choice.size() == 3){
+                if(choice[0] >= 'a' && choice[0] <= 'j' && choice[2] == '0' && choice[1] == '1'){
+                    move_y = 9;
+                    move_x = choice[0] - 'a';
+                }
+                else{
+                    cout << "Invalid guess. Try again." << endl;
+                }
+            }
+            else{
+                cout << "Invalid guess. Try again." << endl;
+            }
+        }while(move_x == 0 || move_y == 0);
+        
+        //make sure spot hasn't already been hit before
+        if(computerMap.getItemAt(move_x,move_y).isHit()){
+            invalidChoice = true;
+        }
+    }while(invalidChoice);
+    
+    //fire
+    string name = computerMap.getItemAt(move_x,move_y).getName();
+    computerMap.getItemAt(move_x,move_y).itemHit();
+    if(computerMap.getItemAt(move_x,move_y).isShip()){
+        if(checkExistence (computerMap, computerMap.getItemAt(move_x,move_y).getName())){
+            cout << "You hit your opponent's ";
+            if(name == "S"){
+                cout << "Submarine!" << endl;
+            }
+            else if(name == "A"){
+                cout << "Aircraft Carrier!" << endl;
+            }
+            else if(name == "B"){
+                cout << "Battleship!" << endl;
+            }
+            else if(name == "C"){
+                cout << "Cruiser!" << endl;
+            }
+            else if(name == "D"){
+                cout << "Destroyer!" << endl;
+            }
+        }
+        else{
+            cout << "You sunk your opponent's ";
+            if(name == "S"){
+                cout << "Submarine!" << endl;
+            }
+            else if(name == "A"){
+                cout << "Aircraft Carrier!" << endl;
+            }
+            else if(name == "B"){
+                cout << "Battleship!" << endl;
+            }
+            else if(name == "C"){
+                cout << "Cruiser!" << endl;
+            }
+            else if(name == "D"){
+                cout << "Destroyer!" << endl;
+            }
+        }
+        return true;
+    }
+    else{
+        cout << "You missed." << endl;
+        return false;
+    }
+}
+
 
 int main(int argc, char ** argv){
-     string fileLoad;
-     transform(fileLoad.begin(), fileLoad.end(), fileLoad.begin(), ::tolower);
-     
-     if (argc >= 2) {
-     fileLoad = argv[1];
-     }
-     else {
-     cout << "Invalid choice. Try again." << endl;
-     return 1;
-     }
-     if(fileLoad != "erase" || fileLoad != "load"){
-     cout << "Invalid choice. Try again." << endl;
-     return 1;
-     }
-     
-     int chanceArray [10][10];
-     //load file into array
-     if(fileLoad == "load"){
-     ifstream in;
-     string file = "likelihood.txt";
-     
-     in.open(file.c_str());
-     
-     if (!in.is_open()) {
-     cerr << "Missing file" << endl;
-     return 1;
-     }
-     
-     int num;
-     int chanceArray [10][10];
-     int a = 0;
-     int b = 0;
-     
-     while (in >> num){
-     chanceArray[a][b] = num;
-     b++;
-     if(b == 10){
-     a++;
-     b = 0;
-     }
-     if(a == 10){
-     break;
-     }
-     }
-     
-     for(int i = 0; i <10; i++){
-     for(int j = 0; j < 10; j++){
-     cout<< chanceArray[i][j] << " ";
-     }
-     cout << endl;
-     }
-     
-     in.close();
-     }
-     else{
-     for(int i = 0; i <10; i++){
-     for(int j = 0; j < 10; j++){
-     chanceArray[i][j] = 1;
-     }
-     }
-     }
+    string fileLoad;
+    transform(fileLoad.begin(), fileLoad.end(), fileLoad.begin(), ::tolower);
+    
+    if (argc >= 2) {
+        fileLoad = argv[1];
+    }
+    else {
+        cout << "Invalid choice. Try again." << endl;
+        return 1;
+    }
+    if(fileLoad != "erase" && fileLoad != "load"){
+        cout << "Invalid choice. Try again." << endl;
+        return 1;
+    }
+    
+    int chanceArray [10][10];
+    //load file into array
+    if(fileLoad == "load"){
+        ifstream in;
+        string file = "likelihood.txt";
+        
+        in.open(file.c_str());
+        
+        if (!in.is_open()) {
+            cerr << "Missing file" << endl;
+            return 1;
+        }
+        
+        int num;
+        int chanceArray [10][10];
+        int a = 0;
+        int b = 0;
+        
+        while (in >> num){
+            chanceArray[a][b] = num;
+            b++;
+            if(b == 10){
+                a++;
+                b = 0;
+            }
+            if(a == 10){
+                break;
+            }
+        }
+        
+        for(int i = 0; i <10; i++){
+            for(int j = 0; j < 10; j++){
+                cout<< chanceArray[i][j] << " ";
+            }
+            cout << endl;
+        }
+        
+        in.close();
+    }
+    else{
+        for(int i = 0; i <10; i++){
+            for(int j = 0; j < 10; j++){
+                chanceArray[i][j] = 1;
+            }
+        }
+    }
     
     cout<< endl << "Welcome to War Boats!"<< endl;
     
@@ -1106,21 +1210,46 @@ int main(int argc, char ** argv){
     }
     if (menuSelection == 1){
         generateShips(*computerMap);
-        computerMap->print();
+        int moveCounter = 0;
+        if(!checkExistence(*userMap, "A") || !checkExistence(*userMap, "B") || !checkExistence(*userMap, "C") || !checkExistence(*userMap, "S") || !checkExistence(*userMap, "D")){
+            generateShips(*userMap);
+            cout << "You didn't finish placing all of your ships. The computer generated the rest for you." << endl << endl;
+        }
+        cout << "How to play:" << endl;
+        cout << "1. User will go first" << endl;
+        cout << "2. On your turn, select a valid spot on the computer's map to fire at" << endl;
+        cout << "3. Hits on the map will be denoted with Xs, misses will be denoted with Os" << endl;
+        cout << "4. The first player to sink all of their enemies ships will be the winner" << endl;
+        cout << "Good luck!" << endl << endl;
+        
+        bool continuePlaying = true;
+        do{
+            if(userTurn(*computerMap, *userMap, moveCounter)){
+                if(!checkExistence(*computerMap, "A") && !checkExistence(*computerMap, "B") && !checkExistence(*computerMap, "C") && !checkExistence(*computerMap, "S") && !checkExistence(*computerMap, "D")){
+                    cout << "Congratulations! You sunk all of your opponent's ships! You won!";
+                    continuePlaying = false;
+                }
+            }
+            if(computerGuess(*userMap)){
+                previousHit = true;
+                if(!checkExistence(*userMap, "A") && !checkExistence(*userMap, "B") && !checkExistence(*userMap, "C") && !checkExistence(*userMap, "S") && !checkExistence(*userMap, "D")){
+                    cout << "Oh no! The computer sunk all of your ships! You lost. :(";
+                    continuePlaying = false;
+                }
+            }
+        }while(continuePlaying);
     }
     
-    
-    computerGuess(*userMap, 0, 0);
     //put stuff here!
     
     
-     //write to file at end of program
-     ofstream out("likelihood.txt");
-     for (int i = 0; i < 10; i++){
-     for(int j = 0; j < 10; j++){
-     out << chanceArray[i][j] << " ";
-     }
-     out << endl;
-     }
+    //write to file at end of program
+    ofstream out("likelihood.txt");
+    for (int i = 0; i < 10; i++){
+        for(int j = 0; j < 10; j++){
+            out << chanceArray[i][j] << " ";
+        }
+        out << endl;
+    }
     return 0;
 }
