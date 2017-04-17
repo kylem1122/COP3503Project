@@ -67,9 +67,9 @@ bool addShip(Map& userMap, string name, string direction, int size){
         //check for a valid choice
         //apply row and column to choice
         if(choice.size() == 2){
-            if(choice[0] >= 'a' && choice[0] <= ('a' + size) && choice[1] > '0' && choice[1] <= '9'){
+            if(choice[0] >= 'a' && choice[0] <= ('k' - size) && choice[1] > '0' && choice[1] <= '9'){
                 column = choice[0] - 'a';
-                row = choice[1] - '0' - 1;
+                row = choice[1] - '1';
             }
             else{
                 cout << "Invalid selection." << endl << endl;
@@ -77,7 +77,7 @@ bool addShip(Map& userMap, string name, string direction, int size){
             }
         }
         else if(choice.size() == 3){
-            if(choice[0] >= 'a' && choice[0] <= ('a' + size) && choice[1] == '1' && choice[2] == '0'){
+            if(choice[0] >= 'a' && choice[0] <= ('k' - size) && choice[1] == '1' && choice[2] == '0'){
                 column = choice[0] - 'a';
                 row = 9;
             }
@@ -121,8 +121,8 @@ bool addShip(Map& userMap, string name, string direction, int size){
         //check for a valid choice
         //apply row and column to choice
         if(choice.size() == 2){
-            if(choice[0] >= 'a' && choice[0] < 'k' && choice[1] > '0' && choice[1] <= '1' + size){
-                row = choice[1] - '0' - 1;
+            if(choice[0] >= 'a' && choice[0] < 'k' && choice[1] > '0' && choice[1] <= ('9' - size + 2)){
+                row = choice[1] - '1';
                 column = choice[0] - 'a';
             }
             else{
@@ -281,7 +281,7 @@ void userAddShip(Map& userMap){
             cin >> choice;
             transform(choice.begin(), choice.end(), choice.begin(), ::tolower);
             
-            if(!addShip(userMap, "C", choice, 5)){
+            if(!addShip(userMap, "C", choice, 3)){
                 return;
             }
             
