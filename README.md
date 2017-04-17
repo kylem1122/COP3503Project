@@ -12,6 +12,11 @@ Runs project with data from previous games
 Erases previous data, starts over with a 10x10 grid and overwrites the file.
   
 ## PLACING PIECES
+1. Enter in character that represents a ship: A, B, S, C, D.
+2. Choose orientation of ship: H or V.
+3. Pick point to place ship, leftmost for horizontal and topmost for vertical.
+4. Repeat for up to 5 ships.
+5. If ships are missing, the computer will randomly assign them placement when the game starts.
 
 ## HOW TO PLAY
 1. Place pieces manually or automatically.
