@@ -47,6 +47,110 @@ int menu(){
     return selection;
 }
 
+
+bool addShip(Map& userMap, string name, string direction, int size){
+    string choice;
+    int column = 0;
+    int row = 0;
+    
+    //add a horizontal ship
+    if (direction == "horizontal" || direction == "h"){
+        cout << endl << "Where would you like to place the farthest left edge? ";
+        cin >> choice;
+        transform(choice.begin(), choice.end(), choice.begin(), ::tolower);
+        
+        //check for a valid choice
+        //apply row and column to choice
+        if(choice.size() == 2){
+            if(choice[0] >= 'a' && choice[0] <= ('a' + size) && choice[1] > '0' && choice[1] <= '9'){
+                column = choice[0] - 'a';
+                row = choice[1] - '0' - 1;
+            }
+            else{
+                cout << "Invalid selection." << endl << endl;
+                return false;
+            }
+        }
+        else if(choice.size() == 3){
+            if(choice[0] >= 'a' && choice[0] <= ('a' + size) && choice[1] == '1' && choice[2] == '0'){
+                column = choice[0] - 'a';
+                row = 9;
+            }
+            else{
+                cout << "Invalid selection." << endl << endl;
+                return false;
+            }
+        }
+        else{
+            cout << "Invalid selection." << endl << endl;
+            return false;
+        }
+        
+        //check if another ship has already been placed here
+        for(int i = 0; i != size; i++){
+            if(userMap.getItemAt(row,column+i).getName() != "~"){
+                cout << "Another ship is already here." << endl;
+                return false;
+            }
+        }
+        
+        //place the ship in the grid
+        for(int i = 0; i != size; i++){
+            Item* ship = new Item(size, name, false);
+            userMap.setItemAt(row, column+i, *ship);
+        }
+        cout << endl << endl << "Your new map is: " << endl << endl;
+        userMap.print();
+        return true;
+    }
+    
+    //add a vertical ship
+    else if(direction == "vertical" || direction == "v"){
+        cout << endl << "Where would you like to place the topmost edge? ";
+        cin >> choice;
+        transform(choice.begin(), choice.end(), choice.begin(), ::tolower);
+        int column = 0;
+        int row = 0;
+        
+        
+        //check for a valid choice
+        //apply row and column to choice
+        if(choice.size() == 2){
+            if(choice[0] >= 'a' && choice[0] < 'k' && choice[1] > '0' && choice[1] <= '1' + size){
+                row = choice[1] - '0' - 1;
+                column = choice[0] - 'a';
+            }
+            else{
+                cout << "Invalid selection." << endl << endl;
+                return false;
+            }
+        }
+        else{
+            cout << "Invalid selection." << endl << endl;
+            return false;
+        }
+        
+        //check if another ship is already located here
+        for(int i = 0; i != size; i++){
+            if(userMap.getItemAt(row+i,column).getName() != "~"){
+                cout << "Another ship is already here" << endl;
+                return false;
+            }
+        }
+        for(int i = 0; i != size; i++){
+            Item* ship = new Item(size, name, false);
+            userMap.setItemAt(row+i, column, *ship);
+        }
+        cout << endl << endl << "Your new map is: " << endl << endl;
+        userMap.print();
+        return true;
+    }
+    else{
+        return false;
+    }
+}
+
+
 //LET THE USER ADD SHIPS
 void userAddShip(Map& userMap){
     string choice = "";
@@ -97,101 +201,11 @@ void userAddShip(Map& userMap){
             cout << "Choice: ";
             cin >> choice;
             transform(choice.begin(), choice.end(), choice.begin(), ::tolower);
-            if (choice == "horizontal" || choice == "h"){
-                cout << endl << "Where would you like to place the farthest left edge? ";
-                cin >> choice;
-                transform(choice.begin(), choice.end(), choice.begin(), ::tolower);
-                int column = 0;
-                int row = 0;
-                
-                if(choice[0] >= 'a' && choice[0] < 'g'){
-                    column = choice[0] - 'a';
-                    if(choice[1] > '0' && choice[1] <= '9'){
-                        if(choice.size() == 3){
-                            if(choice[2] == '0'){
-                                row = 9;
-                            }
-                            else{
-                                cout << "Invalid selection." << endl << endl;
-                                return;
-                            }
-                        }
-                        else if(choice.size() > 3){
-                            cout << "Invalid selection." << endl << endl;
-                            return;
-                        }
-                        else{
-                            row = choice[1] - '0' - 1;
-                        }
-                        
-                        for(int i = 0; i != 5; i++){
-                            if(userMap.getItemAt(row,column+i).getName() != "~"){
-                                cout << "Another ship is already here" << endl;
-                                return;
-                            }
-                        }
-                        for(int i = 0; i != 5; i++){
-                            Item* aircraftCarrier = new Item(5, "A", false);
-                            userMap.setItemAt(row, column+i, *aircraftCarrier);
-                        }
-                        cout << endl << endl << "Your new map is: " << endl << endl;
-                        userMap.print();
-                    }
-                    else{
-                        cout << "Invalid selection." << endl << endl;
-                        return;
-                    }
-                }
-                else{
-                    cout << "Invalid selection." << endl << endl;
-                    return;
-                }
-            }
-            else if(choice == "vertical" || choice == "v"){
-                cout << endl << "Where would you like to place the topmost edge? ";
-                cin >> choice;
-                transform(choice.begin(), choice.end(), choice.begin(), ::tolower);
-                int column = 0;
-                int row = 0;
-                
-                if(choice[0] >= 'a' && choice[0] < 'k'){
-                    column = choice[0] - 'a';
-                    if(choice[1] > '0' && choice[1] <= '6'){
-                        if(choice.size() >= 3){
-                            cout << "Invalid selection." << endl << endl;
-                            return;
-                        }
-                        else{
-                            row = choice[1] - '0' - 1;
-                        }
-                        
-                        for(int i = 0; i != 5; i++){
-                            if(userMap.getItemAt(row+i,column).getName() != "~"){
-                                cout << "Another ship is already here" << endl;
-                                return;
-                            }
-                        }
-                        for(int i = 0; i != 5; i++){
-                            Item* aircraftCarrier = new Item(5, "A", false);
-                            userMap.setItemAt(row+i, column, *aircraftCarrier);
-                        }
-                        cout << endl << endl << "Your new map is: " << endl << endl;
-                        userMap.print();
-                    }
-                    else{
-                        cout << "Invalid selection." << endl << endl;
-                        return;
-                    }
-                }
-                else{
-                    cout << "Invalid selection." << endl << endl;
-                    return;
-                }
-            }
-            else{
-                cout << endl << "ERROR: Invalid choice" << endl;
+            
+            if(!addShip(userMap, "A", choice, 5)){
                 return;
             }
+            
             cout << "Would you like to add another piece? (yes/no) ";
             cin >> choice;
             transform(choice.begin(), choice.end(), choice.begin(), ::tolower);
@@ -210,101 +224,11 @@ void userAddShip(Map& userMap){
             cout << "Choice: ";
             cin >> choice;
             transform(choice.begin(), choice.end(), choice.begin(), ::tolower);
-            if (choice == "horizontal" || choice == "h"){
-                cout << endl << "Where would you like to place the farthest left edge? ";
-                cin >> choice;
-                transform(choice.begin(), choice.end(), choice.begin(), ::tolower);
-                int column = 0;
-                int row = 0;
-                
-                if(choice[0] >= 'a' && choice[0] < 'h'){
-                    column = choice[0] - 'a';
-                    if(choice[1] > '0' && choice[1] <= '9'){
-                        if(choice.size() == 3){
-                            if(choice[2] == '0'){
-                                row = 9;
-                            }
-                            else{
-                                cout << "Invalid selection." << endl << endl;
-                                return;
-                            }
-                        }
-                        else if(choice.size() > 3){
-                            cout << "Invalid selection." << endl << endl;
-                            return;
-                        }
-                        else{
-                            row = choice[1] - '0' - 1;
-                        }
-                        
-                        for(int i = 0; i != 4; i++){
-                            if(userMap.getItemAt(row,column+i).getName() != "~"){
-                                cout << "Another ship is already here" << endl;
-                                return;
-                            }
-                        }
-                        for(int i = 0; i != 4; i++){
-                            Item* battleship = new Item(4, "B", false);
-                            userMap.setItemAt(row, column+i, *battleship);
-                        }
-                        cout << endl << endl << "Your new map is: " << endl << endl;
-                        userMap.print();
-                    }
-                    else{
-                        cout << "Invalid selection." << endl << endl;
-                        return;
-                    }
-                }
-                else{
-                    cout << "Invalid selection." << endl << endl;
-                    return;
-                }
-            }
-            else if(choice == "vertical" || choice == "v"){
-                cout << endl << "Where would you like to place the topmost edge? ";
-                cin >> choice;
-                transform(choice.begin(), choice.end(), choice.begin(), ::tolower);
-                int column = 0;
-                int row = 0;
-                
-                if(choice[0] >= 'a' && choice[0] < 'k'){
-                    column = choice[0] - 'a';
-                    if(choice[1] > '0' && choice[1] <= '7'){
-                        if(choice.size() >= 3){
-                            cout << "Invalid selection." << endl << endl;
-                            return;
-                        }
-                        else{
-                            row = choice[1] - '0' - 1;
-                        }
-                        
-                        for(int i = 0; i != 4; i++){
-                            if(userMap.getItemAt(row+i,column).getName() != "~"){
-                                cout << "Another ship is already here" << endl;
-                                return;
-                            }
-                        }
-                        for(int i = 0; i != 4; i++){
-                            Item* battleship = new Item(4, "B", false);
-                            userMap.setItemAt(row+i, column, *battleship);
-                        }
-                        cout << endl << endl << "Your new map is: " << endl << endl;
-                        userMap.print();
-                    }
-                    else{
-                        cout << "Invalid selection." << endl << endl;
-                        return;
-                    }
-                }
-                else{
-                    cout << "Invalid selection." << endl << endl;
-                    return;
-                }
-            }
-            else{
-                cout << endl << "ERROR: Invalid choice" << endl;
+            
+            if(!addShip(userMap, "B", choice, 4)){
                 return;
             }
+            
             cout << "Would you like to add another piece? (yes/no) ";
             cin >> choice;
             transform(choice.begin(), choice.end(), choice.begin(), ::tolower);
@@ -326,101 +250,11 @@ void userAddShip(Map& userMap){
             cout << "Choice: ";
             cin >> choice;
             transform(choice.begin(), choice.end(), choice.begin(), ::tolower);
-            if (choice == "horizontal" || choice == "h"){
-                cout << endl << "Where would you like to place the farthest left edge? ";
-                cin >> choice;
-                transform(choice.begin(), choice.end(), choice.begin(), ::tolower);
-                int column = 0;
-                int row = 0;
-                
-                if(choice[0] >= 'a' && choice[0] < 'i'){
-                    column = choice[0] - 'a';
-                    if(choice[1] > '0' && choice[1] <= '9'){
-                        if(choice.size() == 3){
-                            if(choice[2] == '0'){
-                                row = 9;
-                            }
-                            else{
-                                cout << "Invalid selection." << endl << endl;
-                                return;
-                            }
-                        }
-                        else if(choice.size() > 3){
-                            cout << "Invalid selection." << endl << endl;
-                            return;
-                        }
-                        else{
-                            row = choice[1] - '0' - 1;
-                        }
-                        
-                        for(int i = 0; i != 3; i++){
-                            if(userMap.getItemAt(row,column+i).getName() != "~"){
-                                cout << "Another ship is already here" << endl;
-                                return;
-                            }
-                        }
-                        for(int i = 0; i != 3; i++){
-                            Item* submarine = new Item(3, "S", false);
-                            userMap.setItemAt(row, column+i, *submarine);
-                        }
-                        cout << endl << endl << "Your new map is: " << endl << endl;
-                        userMap.print();
-                    }
-                    else{
-                        cout << "Invalid selection." << endl << endl;
-                        return;
-                    }
-                }
-                else{
-                    cout << "Invalid selection." << endl << endl;
-                    return;
-                }
-            }
-            else if(choice == "vertical" || choice == "v"){
-                cout << endl << "Where would you like to place the topmost edge? ";
-                cin >> choice;
-                transform(choice.begin(), choice.end(), choice.begin(), ::tolower);
-                int column = 0;
-                int row = 0;
-                
-                if(choice[0] >= 'a' && choice[0] < 'k'){
-                    column = choice[0] - 'a';
-                    if(choice[1] > '0' && choice[1] <= '8'){
-                        if(choice.size() >= 3){
-                            cout << "Invalid selection." << endl << endl;
-                            return;
-                        }
-                        else{
-                            row = choice[1] - '0' - 1;
-                        }
-                        
-                        for(int i = 0; i != 3; i++){
-                            if(userMap.getItemAt(row+i,column).getName() != "~"){
-                                cout << "Another ship is already here" << endl;
-                                return;
-                            }
-                        }
-                        for(int i = 0; i != 3; i++){
-                            Item* submarine = new Item(3, "S", false);
-                            userMap.setItemAt(row+i, column, *submarine);
-                        }
-                        cout << endl << endl << "Your new map is: " << endl << endl;
-                        userMap.print();
-                    }
-                    else{
-                        cout << "Invalid selection." << endl << endl;
-                        return;
-                    }
-                }
-                else{
-                    cout << "Invalid selection." << endl << endl;
-                    return;
-                }
-            }
-            else{
-                cout << endl << "ERROR: Invalid choice" << endl;
+            
+            if(!addShip(userMap, "S", choice, 3)){
                 return;
             }
+            
             cout << "Would you like to add another piece? (yes/no) ";
             cin >> choice;
             transform(choice.begin(), choice.end(), choice.begin(), ::tolower);
@@ -441,101 +275,11 @@ void userAddShip(Map& userMap){
             cout << "Choice: ";
             cin >> choice;
             transform(choice.begin(), choice.end(), choice.begin(), ::tolower);
-            if (choice == "horizontal" || choice == "h"){
-                cout << endl << "Where would you like to place the farthest left edge? ";
-                cin >> choice;
-                transform(choice.begin(), choice.end(), choice.begin(), ::tolower);
-                int column = 0;
-                int row = 0;
-                
-                if(choice[0] >= 'a' && choice[0] < 'i'){
-                    column = choice[0] - 'a';
-                    if(choice[1] > '0' && choice[1] <= '9'){
-                        if(choice.size() == 3){
-                            if(choice[2] == '0'){
-                                row = 9;
-                            }
-                            else{
-                                cout << "Invalid selection." << endl << endl;
-                                return;
-                            }
-                        }
-                        else if(choice.size() > 3){
-                            cout << "Invalid selection." << endl << endl;
-                            return;
-                        }
-                        else{
-                            row = choice[1] - '0' - 1;
-                        }
-                        
-                        for(int i = 0; i != 3; i++){
-                            if(userMap.getItemAt(row,column+i).getName() != "~"){
-                                cout << "Another ship is already here" << endl;
-                                return;
-                            }
-                        }
-                        for(int i = 0; i != 3; i++){
-                            Item* cruiser = new Item(3, "C", false);
-                            userMap.setItemAt(row, column+i, *cruiser);
-                        }
-                        cout << endl << endl << "Your new map is: " << endl << endl;
-                        userMap.print();
-                    }
-                    else{
-                        cout << "Invalid selection." << endl << endl;
-                        return;
-                    }
-                }
-                else{
-                    cout << "Invalid selection." << endl << endl;
-                    return;
-                }
-            }
-            else if(choice == "vertical" || choice == "v"){
-                cout << endl << "Where would you like to place the topmost edge? ";
-                cin >> choice;
-                transform(choice.begin(), choice.end(), choice.begin(), ::tolower);
-                int column = 0;
-                int row = 0;
-                
-                if(choice[0] >= 'a' && choice[0] < 'k'){
-                    column = choice[0] - 'a';
-                    if(choice[1] > '0' && choice[1] <= '8'){
-                        if(choice.size() >= 3){
-                            cout << "Invalid selection." << endl << endl;
-                            return;
-                        }
-                        else{
-                            row = choice[1] - '0' - 1;
-                        }
-                        
-                        for(int i = 0; i != 3; i++){
-                            if(userMap.getItemAt(row+i,column).getName() != "~"){
-                                cout << "Another ship is already here" << endl;
-                                return;
-                            }
-                        }
-                        for(int i = 0; i != 3; i++){
-                            Item* cruiser = new Item(3, "C", false);
-                            userMap.setItemAt(row+i, column, *cruiser);
-                        }
-                        cout << endl << endl << "Your new map is: " << endl << endl;
-                        userMap.print();
-                    }
-                    else{
-                        cout << "Invalid selection." << endl << endl;
-                        return;
-                    }
-                }
-                else{
-                    cout << "Invalid selection." << endl << endl;
-                    return;
-                }
-            }
-            else{
-                cout << endl << "ERROR: Invalid choice" << endl;
+            
+            if(!addShip(userMap, "C", choice, 5)){
                 return;
             }
+            
             cout << "Would you like to add another piece? (yes/no) ";
             cin >> choice;
             transform(choice.begin(), choice.end(), choice.begin(), ::tolower);
@@ -556,101 +300,11 @@ void userAddShip(Map& userMap){
             cout << "Choice: ";
             cin >> choice;
             transform(choice.begin(), choice.end(), choice.begin(), ::tolower);
-            if (choice == "horizontal" || choice == "h"){
-                cout << endl << "Where would you like to place the farthest left edge? ";
-                cin >> choice;
-                transform(choice.begin(), choice.end(), choice.begin(), ::tolower);
-                int column = 0;
-                int row = 0;
-                
-                if(choice[0] >= 'a' && choice[0] < 'j'){
-                    column = choice[0] - 'a';
-                    if(choice[1] > '0' && choice[1] <= '9'){
-                        if(choice.size() == 3){
-                            if(choice[2] == '0'){
-                                row = 9;
-                            }
-                            else{
-                                cout << "Invalid selection." << endl << endl;
-                                return;
-                            }
-                        }
-                        else if(choice.size() > 3){
-                            cout << "Invalid selection." << endl << endl;
-                            return;
-                        }
-                        else{
-                            row = choice[1] - '0' - 1;
-                        }
-                        
-                        for(int i = 0; i != 2; i++){
-                            if(userMap.getItemAt(row,column+i).getName() != "~"){
-                                cout << "Another ship is already here" << endl;
-                                return;
-                            }
-                        }
-                        for(int i = 0; i != 2; i++){
-                            Item* destroyer = new Item(3, "D", false);
-                            userMap.setItemAt(row, column+i, *destroyer);
-                        }
-                        cout << endl << endl << "Your new map is: " << endl << endl;
-                        userMap.print();
-                    }
-                    else{
-                        cout << "Invalid selection." << endl << endl;
-                        return;
-                    }
-                }
-                else{
-                    cout << "Invalid selection." << endl << endl;
-                    return;
-                }
-            }
-            else if(choice == "vertical" || choice == "v"){
-                cout << endl << "Where would you like to place the topmost edge? ";
-                cin >> choice;
-                transform(choice.begin(), choice.end(), choice.begin(), ::tolower);
-                int column = 0;
-                int row = 0;
-                
-                if(choice[0] >= 'a' && choice[0] < 'k'){
-                    column = choice[0] - 'a';
-                    if(choice[1] > '0' && choice[1] <= '9'){
-                        if(choice.size() >= 3){
-                            cout << "Invalid selection." << endl << endl;
-                            return;
-                        }
-                        else{
-                            row = choice[1] - '0' - 1;
-                        }
-                        
-                        for(int i = 0; i != 2; i++){
-                            if(userMap.getItemAt(row+i,column).getName() != "~"){
-                                cout << "Another ship is already here" << endl;
-                                return;
-                            }
-                        }
-                        for(int i = 0; i != 2; i++){
-                            Item* destroyer = new Item(3, "D", false);
-                            userMap.setItemAt(row+i, column, *destroyer);
-                        }
-                        cout << endl << endl << "Your new map is: " << endl << endl;
-                        userMap.print();
-                    }
-                    else{
-                        cout << "Invalid selection." << endl << endl;
-                        return;
-                    }
-                }
-                else{
-                    cout << "Invalid selection." << endl << endl;
-                    return;
-                }
-            }
-            else{
-                cout << endl << "ERROR: Invalid choice" << endl;
+            
+            if(!addShip(userMap, "D", choice, 2)){
                 return;
             }
+            
             cout << "Would you like to add another piece? (yes/no) ";
             cin >> choice;
             transform(choice.begin(), choice.end(), choice.begin(), ::tolower);
@@ -719,101 +373,11 @@ void modifyShips(Map& userMap){
             cout << "Choice: ";
             cin >> choice;
             transform(choice.begin(), choice.end(), choice.begin(), ::tolower);
-            if (choice == "horizontal" || choice == "h"){
-                cout << endl << "Where would you like to place the farthest left edge? ";
-                cin >> choice;
-                transform(choice.begin(), choice.end(), choice.begin(), ::tolower);
-                int column = 0;
-                int row = 0;
-                
-                if(choice[0] >= 'a' && choice[0] < 'g'){
-                    column = choice[0] - 'a';
-                    if(choice[1] > '0' && choice[1] <= '9'){
-                        if(choice.size() == 3){
-                            if(choice[2] == '0'){
-                                row = 9;
-                            }
-                            else{
-                                cout << "Invalid selection." << endl << endl;
-                                return;
-                            }
-                        }
-                        else if(choice.size() > 3){
-                            cout << "Invalid selection." << endl << endl;
-                            return;
-                        }
-                        else{
-                            row = choice[1] - '0' - 1;
-                        }
-                        
-                        for(int i = 0; i != 5; i++){
-                            if(userMap.getItemAt(row,column+i).getName() != "~"){
-                                cout << "Another ship is already here" << endl;
-                                return;
-                            }
-                        }
-                        for(int i = 0; i != 5; i++){
-                            Item* aircraftCarrier = new Item(5, "A", false);
-                            userMap.setItemAt(row, column+i, *aircraftCarrier);
-                        }
-                        cout << endl << endl << "Your new map is: " << endl << endl;
-                        userMap.print();
-                    }
-                    else{
-                        cout << "Invalid selection." << endl << endl;
-                        return;
-                    }
-                }
-                else{
-                    cout << "Invalid selection." << endl << endl;
-                    return;
-                }
-            }
-            else if(choice == "vertical" || choice == "v"){
-                cout << endl << "Where would you like to place the topmost edge? ";
-                cin >> choice;
-                transform(choice.begin(), choice.end(), choice.begin(), ::tolower);
-                int column = 0;
-                int row = 0;
-                
-                if(choice[0] >= 'a' && choice[0] < 'k'){
-                    column = choice[0] - 'a';
-                    if(choice[1] > '0' && choice[1] <= '6'){
-                        if(choice.size() >= 3){
-                            cout << "Invalid selection." << endl << endl;
-                            return;
-                        }
-                        else{
-                            row = choice[1] - '0' - 1;
-                        }
-                        
-                        for(int i = 0; i != 5; i++){
-                            if(userMap.getItemAt(row+i,column).getName() != "~"){
-                                cout << "Another ship is already here" << endl;
-                                return;
-                            }
-                        }
-                        for(int i = 0; i != 5; i++){
-                            Item* aircraftCarrier = new Item(5, "A", false);
-                            userMap.setItemAt(row+i, column, *aircraftCarrier);
-                        }
-                        cout << endl << endl << "Your new map is: " << endl << endl;
-                        userMap.print();
-                    }
-                    else{
-                        cout << "Invalid selection." << endl << endl;
-                        return;
-                    }
-                }
-                else{
-                    cout << "Invalid selection." << endl << endl;
-                    return;
-                }
-            }
-            else{
-                cout << endl << "ERROR: Invalid choice" << endl;
+            
+            if(!addShip(userMap, "A", choice, 5)){
                 return;
             }
+            
             cout << "Would you like to modify another piece? (yes/no) ";
             cin >> choice;
             transform(choice.begin(), choice.end(), choice.begin(), ::tolower);
@@ -840,101 +404,11 @@ void modifyShips(Map& userMap){
             cout << "Choice: ";
             cin >> choice;
             transform(choice.begin(), choice.end(), choice.begin(), ::tolower);
-            if (choice == "horizontal" || choice == "h"){
-                cout << endl << "Where would you like to place the farthest left edge? ";
-                cin >> choice;
-                transform(choice.begin(), choice.end(), choice.begin(), ::tolower);
-                int column = 0;
-                int row = 0;
-                
-                if(choice[0] >= 'a' && choice[0] < 'h'){
-                    column = choice[0] - 'a';
-                    if(choice[1] > '0' && choice[1] <= '9'){
-                        if(choice.size() == 3){
-                            if(choice[2] == '0'){
-                                row = 9;
-                            }
-                            else{
-                                cout << "Invalid selection." << endl << endl;
-                                return;
-                            }
-                        }
-                        else if(choice.size() > 3){
-                            cout << "Invalid selection." << endl << endl;
-                            return;
-                        }
-                        else{
-                            row = choice[1] - '0' - 1;
-                        }
-                        
-                        for(int i = 0; i != 4; i++){
-                            if(userMap.getItemAt(row,column+i).getName() != "~"){
-                                cout << "Another ship is already here" << endl;
-                                return;
-                            }
-                        }
-                        for(int i = 0; i != 4; i++){
-                            Item* battleship = new Item(4, "B", false);
-                            userMap.setItemAt(row, column+i, *battleship);
-                        }
-                        cout << endl << endl << "Your new map is: " << endl << endl;
-                        userMap.print();
-                    }
-                    else{
-                        cout << "Invalid selection." << endl << endl;
-                        return;
-                    }
-                }
-                else{
-                    cout << "Invalid selection." << endl << endl;
-                    return;
-                }
-            }
-            else if(choice == "vertical" || choice == "v"){
-                cout << endl << "Where would you like to place the topmost edge? ";
-                cin >> choice;
-                transform(choice.begin(), choice.end(), choice.begin(), ::tolower);
-                int column = 0;
-                int row = 0;
-                
-                if(choice[0] >= 'a' && choice[0] < 'k'){
-                    column = choice[0] - 'a';
-                    if(choice[1] > '0' && choice[1] <= '7'){
-                        if(choice.size() >= 3){
-                            cout << "Invalid selection." << endl << endl;
-                            return;
-                        }
-                        else{
-                            row = choice[1] - '0' - 1;
-                        }
-                        
-                        for(int i = 0; i != 4; i++){
-                            if(userMap.getItemAt(row+i,column).getName() != "~"){
-                                cout << "Another ship is already here" << endl;
-                                return;
-                            }
-                        }
-                        for(int i = 0; i != 4; i++){
-                            Item* battleship = new Item(4, "B", false);
-                            userMap.setItemAt(row+i, column, *battleship);
-                        }
-                        cout << endl << endl << "Your new map is: " << endl << endl;
-                        userMap.print();
-                    }
-                    else{
-                        cout << "Invalid selection." << endl << endl;
-                        return;
-                    }
-                }
-                else{
-                    cout << "Invalid selection." << endl << endl;
-                    return;
-                }
-            }
-            else{
-                cout << endl << "ERROR: Invalid choice" << endl;
+            
+            if(!addShip(userMap, "B", choice, 4)){
                 return;
             }
+            
             cout << "Would you like to modify another piece? (yes/no) ";
             cin >> choice;
             transform(choice.begin(), choice.end(), choice.begin(), ::tolower);
@@ -964,101 +438,11 @@ void modifyShips(Map& userMap){
             cout << "Choice: ";
             cin >> choice;
             transform(choice.begin(), choice.end(), choice.begin(), ::tolower);
-            if (choice == "horizontal" || choice == "h"){
-                cout << endl << "Where would you like to place the farthest left edge? ";
-                cin >> choice;
-                transform(choice.begin(), choice.end(), choice.begin(), ::tolower);
-                int column = 0;
-                int row = 0;
-                
-                if(choice[0] >= 'a' && choice[0] < 'i'){
-                    column = choice[0] - 'a';
-                    if(choice[1] > '0' && choice[1] <= '9'){
-                        if(choice.size() == 3){
-                            if(choice[2] == '0'){
-                                row = 9;
-                            }
-                            else{
-                                cout << "Invalid selection." << endl << endl;
-                                return;
-                            }
-                        }
-                        else if(choice.size() > 3){
-                            cout << "Invalid selection." << endl << endl;
-                            return;
-                        }
-                        else{
-                            row = choice[1] - '0' - 1;
-                        }
-                        
-                        for(int i = 0; i != 3; i++){
-                            if(userMap.getItemAt(row,column+i).getName() != "~"){
-                                cout << "Another ship is already here" << endl;
-                                return;
-                            }
-                        }
-                        for(int i = 0; i != 3; i++){
-                            Item* submarine = new Item(3, "S", false);
-                            userMap.setItemAt(row, column+i, *submarine);
-                        }
-                        cout << endl << endl << "Your new map is: " << endl << endl;
-                        userMap.print();
-                    }
-                    else{
-                        cout << "Invalid selection." << endl << endl;
-                        return;
-                    }
-                }
-                else{
-                    cout << "Invalid selection." << endl << endl;
-                    return;
-                }
-            }
-            else if(choice == "vertical" || choice == "v"){
-                cout << endl << "Where would you like to place the topmost edge? ";
-                cin >> choice;
-                transform(choice.begin(), choice.end(), choice.begin(), ::tolower);
-                int column = 0;
-                int row = 0;
-                
-                if(choice[0] >= 'a' && choice[0] < 'k'){
-                    column = choice[0] - 'a';
-                    if(choice[1] > '0' && choice[1] <= '8'){
-                        if(choice.size() >= 3){
-                            cout << "Invalid selection." << endl << endl;
-                            return;
-                        }
-                        else{
-                            row = choice[1] - '0' - 1;
-                        }
-                        
-                        for(int i = 0; i != 3; i++){
-                            if(userMap.getItemAt(row+i,column).getName() != "~"){
-                                cout << "Another ship is already here" << endl;
-                                return;
-                            }
-                        }
-                        for(int i = 0; i != 3; i++){
-                            Item* submarine = new Item(3, "S", false);
-                            userMap.setItemAt(row+i, column, *submarine);
-                        }
-                        cout << endl << endl << "Your new map is: " << endl << endl;
-                        userMap.print();
-                    }
-                    else{
-                        cout << "Invalid selection." << endl << endl;
-                        return;
-                    }
-                }
-                else{
-                    cout << "Invalid selection." << endl << endl;
-                    return;
-                }
-            }
-            else{
-                cout << endl << "ERROR: Invalid choice" << endl;
+            
+            if(!addShip(userMap, "S", choice, 3)){
                 return;
             }
+            
             cout << "Would you like to modify another piece? (yes/no) ";
             cin >> choice;
             transform(choice.begin(), choice.end(), choice.begin(), ::tolower);
@@ -1087,101 +471,11 @@ void modifyShips(Map& userMap){
             cout << "Choice: ";
             cin >> choice;
             transform(choice.begin(), choice.end(), choice.begin(), ::tolower);
-            if (choice == "horizontal" || choice == "h"){
-                cout << endl << "Where would you like to place the farthest left edge? ";
-                cin >> choice;
-                transform(choice.begin(), choice.end(), choice.begin(), ::tolower);
-                int column = 0;
-                int row = 0;
-                
-                if(choice[0] >= 'a' && choice[0] < 'i'){
-                    column = choice[0] - 'a';
-                    if(choice[1] > '0' && choice[1] <= '9'){
-                        if(choice.size() == 3){
-                            if(choice[2] == '0'){
-                                row = 9;
-                            }
-                            else{
-                                cout << "Invalid selection." << endl << endl;
-                                return;
-                            }
-                        }
-                        else if(choice.size() > 3){
-                            cout << "Invalid selection." << endl << endl;
-                            return;
-                        }
-                        else{
-                            row = choice[1] - '0' - 1;
-                        }
-                        
-                        for(int i = 0; i != 3; i++){
-                            if(userMap.getItemAt(row,column+i).getName() != "~"){
-                                cout << "Another ship is already here" << endl;
-                                return;
-                            }
-                        }
-                        for(int i = 0; i != 3; i++){
-                            Item* cruiser = new Item(3, "C", false);
-                            userMap.setItemAt(row, column+i, *cruiser);
-                        }
-                        cout << endl << endl << "Your new map is: " << endl << endl;
-                        userMap.print();
-                    }
-                    else{
-                        cout << "Invalid selection." << endl << endl;
-                        return;
-                    }
-                }
-                else{
-                    cout << "Invalid selection." << endl << endl;
-                    return;
-                }
-            }
-            else if(choice == "vertical" || choice == "v"){
-                cout << endl << "Where would you like to place the topmost edge? ";
-                cin >> choice;
-                transform(choice.begin(), choice.end(), choice.begin(), ::tolower);
-                int column = 0;
-                int row = 0;
-                
-                if(choice[0] >= 'a' && choice[0] < 'k'){
-                    column = choice[0] - 'a';
-                    if(choice[1] > '0' && choice[1] <= '8'){
-                        if(choice.size() >= 3){
-                            cout << "Invalid selection." << endl << endl;
-                            return;
-                        }
-                        else{
-                            row = choice[1] - '0' - 1;
-                        }
-                        
-                        for(int i = 0; i != 3; i++){
-                            if(userMap.getItemAt(row+i,column).getName() != "~"){
-                                cout << "Another ship is already here" << endl;
-                                return;
-                            }
-                        }
-                        for(int i = 0; i != 3; i++){
-                            Item* cruiser = new Item(3, "C", false);
-                            userMap.setItemAt(row+i, column, *cruiser);
-                        }
-                        cout << endl << endl << "Your new map is: " << endl << endl;
-                        userMap.print();
-                    }
-                    else{
-                        cout << "Invalid selection." << endl << endl;
-                        return;
-                    }
-                }
-                else{
-                    cout << "Invalid selection." << endl << endl;
-                    return;
-                }
-            }
-            else{
-                cout << endl << "ERROR: Invalid choice" << endl;
+            
+            if(!addShip(userMap, "C", choice, 3)){
                 return;
             }
+            
             cout << "Would you like to modify another piece? (yes/no) ";
             cin >> choice;
             transform(choice.begin(), choice.end(), choice.begin(), ::tolower);
@@ -1209,102 +503,11 @@ void modifyShips(Map& userMap){
             cout << "V - Vertical" << endl;
             cout << "Choice: ";
             cin >> choice;
-            transform(choice.begin(), choice.end(), choice.begin(), ::tolower);
-            if (choice == "horizontal" || choice == "h"){
-                cout << endl << "Where would you like to place the farthest left edge? ";
-                cin >> choice;
-                transform(choice.begin(), choice.end(), choice.begin(), ::tolower);
-                int column = 0;
-                int row = 0;
-                
-                if(choice[0] >= 'a' && choice[0] < 'j'){
-                    column = choice[0] - 'a';
-                    if(choice[1] > '0' && choice[1] <= '9'){
-                        if(choice.size() == 3){
-                            if(choice[2] == '0'){
-                                row = 9;
-                            }
-                            else{
-                                cout << "Invalid selection." << endl << endl;
-                                return;
-                            }
-                        }
-                        else if(choice.size() > 3){
-                            cout << "Invalid selection." << endl << endl;
-                            return;
-                        }
-                        else{
-                            row = choice[1] - '0' - 1;
-                        }
-                        
-                        for(int i = 0; i != 2; i++){
-                            if(userMap.getItemAt(row,column+i).getName() != "~"){
-                                cout << "Another ship is already here" << endl;
-                                return;
-                            }
-                        }
-                        for(int i = 0; i != 2; i++){
-                            Item* destroyer = new Item(3, "D", false);
-                            userMap.setItemAt(row, column+i, *destroyer);
-                        }
-                        cout << endl << endl << "Your new map is: " << endl << endl;
-                        userMap.print();
-                    }
-                    else{
-                        cout << "Invalid selection." << endl << endl;
-                        return;
-                    }
-                }
-                else{
-                    cout << "Invalid selection." << endl << endl;
-                    return;
-                }
-            }
-            else if(choice == "vertical" || choice == "v"){
-                cout << endl << "Where would you like to place the topmost edge? ";
-                cin >> choice;
-                transform(choice.begin(), choice.end(), choice.begin(), ::tolower);
-                int column = 0;
-                int row = 0;
-                
-                if(choice[0] >= 'a' && choice[0] < 'k'){
-                    column = choice[0] - 'a';
-                    if(choice[1] > '0' && choice[1] <= '9'){
-                        if(choice.size() >= 3){
-                            cout << "Invalid selection." << endl << endl;
-                            return;
-                        }
-                        else{
-                            row = choice[1] - '0' - 1;
-                        }
-                        
-                        for(int i = 0; i != 2; i++){
-                            if(userMap.getItemAt(row+i,column).getName() != "~"){
-                                cout << "Another ship is already here" << endl;
-                                return;
-                            }
-                        }
-                        for(int i = 0; i != 2; i++){
-                            Item* destroyer = new Item(3, "D", false);
-                            userMap.setItemAt(row+i, column, *destroyer);
-                        }
-                        cout << endl << endl << "Your new map is: " << endl << endl;
-                        userMap.print();
-                    }
-                    else{
-                        cout << "Invalid selection." << endl << endl;
-                        return;
-                    }
-                }
-                else{
-                    cout << "Invalid selection." << endl << endl;
-                    return;
-                }
-            }
-            else{
-                cout << endl << "ERROR: Invalid choice" << endl;
+            
+            if(!addShip(userMap, "D", choice, 2)){
                 return;
             }
+            
             cout << "Would you like to modify another piece? (yes/no) ";
             cin >> choice;
             transform(choice.begin(), choice.end(), choice.begin(), ::tolower);
@@ -1818,6 +1021,7 @@ bool userTurn(Map& computerMap, Map& userMap, int& moveCounter){
 
 
 int main(int argc, char ** argv){
+    
     srand(static_cast<unsigned int> (time(NULL)));
     string fileLoad;
     transform(fileLoad.begin(), fileLoad.end(), fileLoad.begin(), ::tolower);
@@ -1871,7 +1075,6 @@ int main(int argc, char ** argv){
             }
         }
     }
-    
     cout<< endl << "Welcome to War Boats!"<< endl;
     
     //Make maps
