@@ -27,6 +27,7 @@ int menu(){
     int selection = 0;
     bool tryAgain;
     do{
+        //prints out main menu
         tryAgain = false;
         cout<< endl << "Please select an option:"<< endl;
         cout<< "1 - Start Game "<< endl;
@@ -35,6 +36,8 @@ int menu(){
         cout<< "4 - Modify Pieces "<< endl;
         cout<< "5 - Print Current Map" << endl;
         cout<< "6 - Exit "<< endl;
+        
+        //checks for valid input
         if(!(cin >> selection)){
             cout << endl << "ERROR: Invalid selection. Try again." << endl;
             cin.clear();
@@ -52,7 +55,7 @@ int menu(){
     return selection;
 }
 
-
+//adds ship from both the modifyShip and the userAddShip methods
 bool addShip(Map& userMap, string name, string direction, int size){
     string choice;
     int column = 0;
@@ -162,6 +165,8 @@ void userAddShip(Map& userMap){
     cout << endl <<"Your current board is:" << endl << endl;
     userMap.print();
     do{
+        
+        //prints out a menu
         const char separator    = ' ';
         cout << endl << "Which ship would you like to place?" << endl << endl;
         cout << left << setw(10) << setfill(separator) << "Symbol";
@@ -192,12 +197,15 @@ void userAddShip(Map& userMap){
         cin >> choice;
         transform(choice.begin(), choice.end(), choice.begin(), ::tolower);
         
+        //checks for aircrafter carrier
         if(choice == "a"){
+            //checks to see if it exists
             if(checkExistence(userMap, "A")){
                 cout << "This piece is currently on the board."<< endl;
                 cout << "Please modify current pieces through the main menu" << endl;
                 return;
             }
+            //allows for choice of horizontal or vertical ship placement
             cout << endl << endl << "You chose to add an Aircraft Carrier" << endl;
             cout << "The length of an Aircraft Carrier is 5" << endl;
             cout << "Which direction would you like your ship?" << endl;
@@ -207,6 +215,8 @@ void userAddShip(Map& userMap){
             cin >> choice;
             transform(choice.begin(), choice.end(), choice.begin(), ::tolower);
             
+            
+            //brings the map/ship/direction/size to the addShip method
             if(!addShip(userMap, "A", choice, 5)){
                 return;
             }
@@ -223,6 +233,8 @@ void userAddShip(Map& userMap){
             }
             cout << endl << endl << "You chose to add a Battleship" << endl;
             cout << "The length of a Battleship is 4" << endl;
+            
+            //allows user to choose a direction to place the ship
             cout << "Which direction would you like your ship?" << endl;
             cout << "H - Horizontal" << endl;
             cout << "V - Vertical" << endl;
@@ -230,6 +242,7 @@ void userAddShip(Map& userMap){
             cin >> choice;
             transform(choice.begin(), choice.end(), choice.begin(), ::tolower);
             
+            //brings the map/ship/direction/size to the addShip method
             if(!addShip(userMap, "B", choice, 4)){
                 return;
             }
@@ -249,6 +262,8 @@ void userAddShip(Map& userMap){
             }
             cout << endl << endl << "You chose to add a Submarine" << endl;
             cout << "The length of a Submarine is 3" << endl;
+            
+            //allows user to choose a direction to place ship
             cout << "Which direction would you like your ship?" << endl;
             cout << "H - Horizontal" << endl;
             cout << "V - Vertical" << endl;
@@ -256,6 +271,7 @@ void userAddShip(Map& userMap){
             cin >> choice;
             transform(choice.begin(), choice.end(), choice.begin(), ::tolower);
             
+            //brings the map/ship/direction/size to the addShip method
             if(!addShip(userMap, "S", choice, 3)){
                 return;
             }
@@ -280,7 +296,8 @@ void userAddShip(Map& userMap){
             cout << "Choice: ";
             cin >> choice;
             transform(choice.begin(), choice.end(), choice.begin(), ::tolower);
-            
+
+                        //brings the map/ship/direction/size to the addShip method
             if(!addShip(userMap, "C", choice, 3)){
                 return;
             }
@@ -299,6 +316,8 @@ void userAddShip(Map& userMap){
             }
             cout << endl << endl << "You chose to add a Destroyer" << endl;
             cout << "The length of a Destroyer is 2" << endl;
+            
+            //allows the user to choose a direction to place the ship
             cout << "Which direction would you like your ship?" << endl;
             cout << "H - Horizontal" << endl;
             cout << "V - Vertical" << endl;
@@ -306,6 +325,7 @@ void userAddShip(Map& userMap){
             cin >> choice;
             transform(choice.begin(), choice.end(), choice.begin(), ::tolower);
             
+                        //brings the map/ship/direction/size to the addShip method
             if(!addShip(userMap, "D", choice, 2)){
                 return;
             }
@@ -321,11 +341,13 @@ void userAddShip(Map& userMap){
     }while(choice == "yes");
 }
 
+//allows the user to modify their previous ship selections
 void modifyShips(Map& userMap){
     string choice = "";
     cout << endl <<"Your current board is:" << endl << endl;
     userMap.print();
     do{
+        //prints out a menu and allows the user to choose which ship they want to modify
         const char separator    = ' ';
         cout << endl << "Which ship would you like to modify?" << endl << endl;
         cout << left << setw(10) << setfill(separator) << "Symbol";
@@ -356,12 +378,15 @@ void modifyShips(Map& userMap){
         cin >> choice;
         transform(choice.begin(), choice.end(), choice.begin(), ::tolower);
         
+        //modify aircraft carrier
         if(choice == "a"){
+            //check if an aircraft carrier is on the map
             if(!checkExistence(userMap, "A")){
                 cout << "This piece isn't currently on the board."<< endl;
                 cout << "Please add current pieces through the main menu" << endl;
                 return;
             }
+            //removes aircraft carrier from map
             for(int i = 0; i < 10; i++){
                 for(int j = 0; j < 10; j++){
                     if(userMap.getItemAt(i,j).getName() == "A"){
@@ -379,6 +404,7 @@ void modifyShips(Map& userMap){
             cin >> choice;
             transform(choice.begin(), choice.end(), choice.begin(), ::tolower);
             
+            //brings the map/ship/direction/size to the addShip method
             if(!addShip(userMap, "A", choice, 5)){
                 return;
             }
@@ -387,12 +413,16 @@ void modifyShips(Map& userMap){
             cin >> choice;
             transform(choice.begin(), choice.end(), choice.begin(), ::tolower);
         }
+        
+        //modify the battleship
         else if(choice == "b"){
+            //checks existence
             if(!checkExistence(userMap, "B")){
                 cout << "This piece isn't currently on the board."<< endl;
                 cout << "Please add current pieces through the main menu" << endl;
                 return;
             }
+            //removes ship
             for(int i = 0; i < 10; i++){
                 for(int j = 0; j < 10; j++){
                     if(userMap.getItemAt(i,j).getName() == "B"){
@@ -410,6 +440,7 @@ void modifyShips(Map& userMap){
             cin >> choice;
             transform(choice.begin(), choice.end(), choice.begin(), ::tolower);
             
+            //brings the map/ship/direction/size to the addShip method
             if(!addShip(userMap, "B", choice, 4)){
                 return;
             }
@@ -422,11 +453,13 @@ void modifyShips(Map& userMap){
         
         //ADD SUBMARINE
         else if (choice == "s"){
+            //check existence
             if(!checkExistence(userMap, "S")){
                 cout << "This piece isn't currently on the board."<< endl;
                 cout << "Please add current pieces through the main menu" << endl;
                 return;
             }
+            //removes ship
             for(int i = 0; i < 10; i++){
                 for(int j = 0; j < 10; j++){
                     if(userMap.getItemAt(i,j).getName() == "S"){
@@ -444,6 +477,7 @@ void modifyShips(Map& userMap){
             cin >> choice;
             transform(choice.begin(), choice.end(), choice.begin(), ::tolower);
             
+            //brings the map/ship/direction/size to the addShip method
             if(!addShip(userMap, "S", choice, 3)){
                 return;
             }
@@ -455,11 +489,14 @@ void modifyShips(Map& userMap){
         
         //ADD CRUISER
         else if (choice == "c"){
+            
+            //checks existence
             if(!checkExistence(userMap, "C")){
                 cout << "This piece isn't currently on the board."<< endl;
                 cout << "Please add current pieces through the main menu" << endl;
                 return;
             }
+            //remvoes ship
             for(int i = 0; i < 10; i++){
                 for(int j = 0; j < 10; j++){
                     if(userMap.getItemAt(i,j).getName() == "C"){
@@ -477,6 +514,7 @@ void modifyShips(Map& userMap){
             cin >> choice;
             transform(choice.begin(), choice.end(), choice.begin(), ::tolower);
             
+            //brings the map/ship/direction/size to the addShip method
             if(!addShip(userMap, "C", choice, 3)){
                 return;
             }
@@ -488,11 +526,13 @@ void modifyShips(Map& userMap){
         
         //ADD DESTROYER
         else if (choice == "d"){
+            //checks existence
             if(!checkExistence(userMap, "D")){
                 cout << "This piece isn't currently on the board."<< endl;
                 cout << "Please add current pieces through the main menu" << endl;
                 return;
             }
+            //removes ship
             for(int i = 0; i < 10; i++){
                 for(int j = 0; j < 10; j++){
                     if(userMap.getItemAt(i,j).getName() == "D"){
@@ -509,6 +549,7 @@ void modifyShips(Map& userMap){
             cout << "Choice: ";
             cin >> choice;
             
+            //brings the map/ship/direction/size to the addShip method
             if(!addShip(userMap, "D", choice, 2)){
                 return;
             }
@@ -529,12 +570,16 @@ int chanceArray [10][10];
 int computer_x = 0;
 int computer_y = 0;
 
+//computer makes a guess
 bool computerGuess(Map& userMap){
     srand(static_cast<unsigned int> (time(NULL)));
     int max_x = 0;
     int max_y = 0;
     int max = 0;
     
+    //if the previous move was a hit, search around the area
+    //search "most likely" areas first
+    //if all of them come back negative, search any area in the surrounding area
     if(previousHit){
         
         if(computer_x != 9){
@@ -599,6 +644,7 @@ bool computerGuess(Map& userMap){
         }
     }
     
+    //if the previous move wasn't a hit
     if(!previousHit){
         
         //find an open index
@@ -629,6 +675,7 @@ bool computerGuess(Map& userMap){
                 }
             }
         }
+        //if a max index wasn't found, choose a random open variable
         if(max == 0){
             do{
                 max_x = rand()%10;
@@ -637,14 +684,16 @@ bool computerGuess(Map& userMap){
         }
     }
     
-    //fire
+    //FIRE!
+    //get the name of the target
     string name = userMap.getItemAt(max_x,max_y).getName();
-    userMap.getItemAt(max_x,max_y).itemHit();
+    //if the item was a ship...
     if(userMap.getItemAt(max_x,max_y).isShip()){
         previousHit = true;
         computer_x = max_x;
         computer_y = max_y;
         
+        //increment the chanceArray to increase the likelihood of ships in the row/column
         for(int i = 0; i < 10; i++){
             for(int j = 0; j < 10; j++){
                 if(i == max_x){
@@ -655,10 +704,12 @@ bool computerGuess(Map& userMap){
                 }
             }
         }
+        //change the item at the index
         Item* hit = new Item(0, "X", true);
         userMap.setItemAt(max_x,max_y,*hit);
         
-        
+        //if there are more of the same ship object on the map, the ship wasn't sunk.
+        //return that it was hit
         if(checkExistence (userMap, name)){
             cout << "The computer hit your ";
             if(name == "S"){
@@ -677,6 +728,8 @@ bool computerGuess(Map& userMap){
                 cout << "Destroyer!" << endl;
             }
         }
+        //if there are no more of the same ship object on the map, the ship was sunk
+        //return that the ship sunk
         else{
             previousHit = false;
             cout << "The computer sunk your ";
@@ -698,6 +751,7 @@ bool computerGuess(Map& userMap){
         }
         return true;
     }
+    //the computer missed. print that.
     else{
         cout << "The computer missed." << endl;
         Item* hit = new Item(0, "O", true);
@@ -713,16 +767,18 @@ void generateShips(Map& computerMap){
         bool freeSpace;
         do{
             freeSpace = true;
-            //vertical
+            //randomly add vertical or horizontal ship
             if(rand() % 2){
                 int x = rand() % 10;
                 int y = rand() % 6;
                 for(int i = 0; i != 5; i++){
+                    //if there is a different ship there, don't add it there
                     if(computerMap.getItemAt(x,y+i).getName() != "~"){
                         freeSpace = false;
                         break;
                     }
                 }
+                //add the ship
                 if(freeSpace){
                     for(int i = 0; i != 5; i++){
                         Item* aircraftCarrier = new Item(5, "A", false);
@@ -730,16 +786,17 @@ void generateShips(Map& computerMap){
                     }
                 }
             }
-            //horizontal
             else{
                 int x = rand() % 6;
                 int y = rand() % 10;
                 for(int i = 0; i != 5; i++){
+                    //if there is a different ship there, don't add it there
                     if(computerMap.getItemAt(x+i,y).getName() != "~"){
                         freeSpace = false;
                         break;
                     }
                 }
+                //add the ship
                 if(freeSpace){
                     for(int i = 0; i != 5; i++){
                         Item* aircraftCarrier = new Item(5, "A", false);
@@ -755,16 +812,18 @@ void generateShips(Map& computerMap){
         bool freeSpace;
         do{
             freeSpace = true;
-            //vertical
+            //randomly place it vertical or horizontal
             if(rand() % 2){
                 int x = rand() % 10;
                 int y = rand() % 7;
                 for(int i = 0; i !=4; i++){
+                    //if there is a different ship there, don't add it there
                     if(computerMap.getItemAt(x,y+i).getName() != "~"){
                         freeSpace = false;
                         break;
                     }
                 }
+                //add ship
                 if(freeSpace){
                     for(int i = 0; i != 4; i++){
                         Item* battleship = new Item(4, "B", false);
@@ -772,16 +831,18 @@ void generateShips(Map& computerMap){
                     }
                 }
             }
-            //horizontal
+            
             else{
                 int x = rand() % 7;
                 int y = rand() % 10;
                 for(int i = 0; i != 4; i++){
+                    //if there is a different ship there, don't add it there
                     if(computerMap.getItemAt(x+i,y).getName() != "~"){
                         freeSpace = false;
                         break;
                     }
                 }
+                //add ship
                 if(freeSpace){
                     for(int i = 0; i != 4; i++){
                         Item* battleship = new Item(4, "B", false);
@@ -797,16 +858,18 @@ void generateShips(Map& computerMap){
         bool freeSpace;
         do{
             freeSpace = true;
-            //vertical
+            //randomly place ship vertical or horizontal
             if(rand() % 2){
                 int x = rand() % 10;
                 int y = rand() % 8;
                 for(int i = 0; i !=3; i++){
+                    //if there is a different ship there, don't add it there
                     if(computerMap.getItemAt(x,y+i).getName() != "~"){
                         freeSpace = false;
                         break;
                     }
                 }
+                //add ship
                 if(freeSpace){
                     for(int i = 0; i != 3; i++){
                         Item* submarine = new Item(3, "S", false);
@@ -814,7 +877,7 @@ void generateShips(Map& computerMap){
                     }
                 }
             }
-            //horizontal
+            
             else{
                 int x = rand() % 8;
                 int y = rand() % 10;
@@ -824,6 +887,7 @@ void generateShips(Map& computerMap){
                         break;
                     }
                 }
+                //addship
                 if(freeSpace){
                     for(int i = 0; i != 3; i++){
                         Item* submarine = new Item(3, "S", false);
@@ -839,16 +903,18 @@ void generateShips(Map& computerMap){
         bool freeSpace;
         do{
             freeSpace = true;
-            //vertical
+            //randomly place ship vertical or horizontal
             if(rand() % 2){
                 int x = rand() % 10;
                 int y = rand() % 8;
                 for(int i = 0; i !=3; i++){
+                    //if there is a different ship there, don't add it there
                     if(computerMap.getItemAt(x,y+i).getName() != "~"){
                         freeSpace = false;
                         break;
                     }
                 }
+                //add ship
                 if(freeSpace){
                     for(int i = 0; i != 3; i++){
                         Item* cruiser = new Item(3, "C", false);
@@ -856,16 +922,18 @@ void generateShips(Map& computerMap){
                     }
                 }
             }
-            //horizontal
+            //
             else{
                 int x = rand() % 8;
                 int y = rand() % 10;
                 for(int i = 0; i != 3; i++){
+                    //if there is a different ship there, don't add it there
                     if(computerMap.getItemAt(x+i,y).getName() != "~"){
                         freeSpace = false;
                         break;
                     }
                 }
+                //add ship
                 if(freeSpace){
                     for(int i = 0; i != 3; i++){
                         Item* cruiser = new Item(3, "C", false);
@@ -881,16 +949,18 @@ void generateShips(Map& computerMap){
         bool freeSpace;
         do{
             freeSpace = true;
-            //vertical
+            //randomly place a ship vertical or horizontal
             if(rand() % 2){
                 int x = rand() % 10;
                 int y = rand() % 9;
                 for(int i = 0; i !=2; i++){
+                    //if there is a different ship there, don't add it there
                     if(computerMap.getItemAt(x,y+i).getName() != "~"){
                         freeSpace = false;
                         break;
                     }
                 }
+                //add ship
                 if(freeSpace){
                     for(int i = 0; i != 2; i++){
                         Item* destroyer = new Item(2, "D", false);
@@ -898,16 +968,18 @@ void generateShips(Map& computerMap){
                     }
                 }
             }
-            //horizontal
+            
             else{
                 int x = rand() % 9;
                 int y = rand() % 10;
                 for(int i = 0; i != 2; i++){
+                    //if there is a different ship there, don't add it there
                     if(computerMap.getItemAt(x+i,y).getName() != "~"){
                         freeSpace = false;
                         break;
                     }
                 }
+                //add ship
                 if(freeSpace){
                     for(int i = 0; i != 2; i++){
                         Item* destroyer = new Item(2, "D", false);
@@ -972,12 +1044,14 @@ bool userTurn(Map& computerMap, Map& userMap, int& moveCounter){
         }
     }while(invalidChoice);
     
-    //fire
+    //FIRE!
     string name = computerMap.getItemAt(move_x,move_y).getName();
+    //if the item is a ship, mark it hit
     if(computerMap.getItemAt(move_x,move_y).isShip()){
         Item* hit = new Item(0, "X", true);
         computerMap.setItemAt(move_x,move_y,*hit);
         
+        //if there are more of the same ship type on the map, print out it was hit
         if(checkExistence (computerMap, name)){
             cout << "You hit your opponent's ";
             if(name == "S"){
@@ -996,6 +1070,8 @@ bool userTurn(Map& computerMap, Map& userMap, int& moveCounter){
                 cout << "Destroyer!" << endl;
             }
         }
+        
+        //if there are no more of teh same ship type on the map, print out it was sunk
         else{
             cout << "You sunk your opponent's ";
             if(name == "S"){
@@ -1016,6 +1092,7 @@ bool userTurn(Map& computerMap, Map& userMap, int& moveCounter){
         }
         return true;
     }
+    //if the item wasn't a ship, return that it was a miss
     else{
         Item* hit = new Item(0, "O", true);
         computerMap.setItemAt(move_x,move_y,*hit);
@@ -1024,9 +1101,9 @@ bool userTurn(Map& computerMap, Map& userMap, int& moveCounter){
     }
 }
 
-
+//main method
 int main(int argc, char ** argv){
-    
+    //receive running input whether to "create" "load" or "erase" the machine statistics
     srand(static_cast<unsigned int> (time(NULL)));
     string fileLoad;
     transform(fileLoad.begin(), fileLoad.end(), fileLoad.begin(), ::tolower);
@@ -1043,13 +1120,14 @@ int main(int argc, char ** argv){
         return 1;
     }
     
-    //load file into array
+    //if load was chosen, load the file
     if(fileLoad == "load"){
         ifstream in;
         string file = "likelihood.txt";
         
         in.open(file.c_str());
         
+        //missing file
         if (!in.is_open()) {
             cerr << "Missing file" << endl;
             return 1;
@@ -1059,6 +1137,7 @@ int main(int argc, char ** argv){
         int a = 0;
         int b = 0;
         
+        //place the file into an array
         while (in >> num){
             chanceArray[a][b] = num;
             b++;
@@ -1073,6 +1152,8 @@ int main(int argc, char ** argv){
         
         in.close();
     }
+    
+    //if "create" or "erase" were chosen
     else{
         for(int i = 0; i <10; i++){
             for(int j = 0; j < 10; j++){
@@ -1080,40 +1161,59 @@ int main(int argc, char ** argv){
             }
         }
     }
+    
+    //welcome to the game
     cout<< endl << "Welcome to War Boats!"<< endl;
     
     //Make maps
     Map* userMap = new Map();
     Map* computerMap = new Map();
+    
+    //print out menu
     int menuSelection;
     do{
         menuSelection = menu();
+        
+        //allow the user to add ships
         if(menuSelection == 2){
             userAddShip(*userMap);
         }
+        
+        //allow the computer to add ships for the user
         if(menuSelection == 3){
             generateShips(*userMap);
             cout << "Your new map is: " << endl << endl;
             userMap->print();
         }
+        
+        //allow the user to modify existing ships
         else if(menuSelection == 4){
             modifyShips(*userMap);
         }
+        
+        //print out the user's map
         else if(menuSelection == 5){
             userMap->print();
         }
     }while(menuSelection != 6 && menuSelection != 1);
     
+    //exit the game
     if(menuSelection == 6){
         return 0;
     }
+    
+    //start the game
     if (menuSelection == 1){
+        //generate a map for the computer
         generateShips(*computerMap);
         int moveCounter = 0;
+        
+        //if the user didn't fill their map with ships
         if(!checkExistence(*userMap, "A") || !checkExistence(*userMap, "B") || !checkExistence(*userMap, "C") || !checkExistence(*userMap, "S") || !checkExistence(*userMap, "D")){
             generateShips(*userMap);
             cout << "You didn't finish placing all of your ships. The computer generated the rest for you." << endl << endl;
         }
+        //print out how play
         cout << "How to play:" << endl;
         cout << "1. User will go first" << endl;
         cout << "2. On your turn, select a valid spot on the computer's map to fire at" << endl;
@@ -1121,35 +1221,48 @@ int main(int argc, char ** argv){
         cout << "4. The first player to sink all of their enemies ships will be the winner" << endl;
         cout << "Good luck!" << endl << endl;
         
+        //loop while not all the ships were sunk
         bool continuePlaying = true;
         do{
+            //allow the user a turn
             if(userTurn(*computerMap, *userMap, moveCounter)){
+                //if all the ships were sunk, load the file with the chanceArray and end game
                 if(!checkExistence(*computerMap, "A") && !checkExistence(*computerMap, "B") && !checkExistence(*computerMap, "C") && !checkExistence(*computerMap, "S") && !checkExistence(*computerMap, "D")){
                     cout << "Congratulations! You sunk all of your opponent's ships! You won!";
+                    //write to file at end of program
+                    ofstream out("likelihood.txt");
+                    for (int i = 0; i < 10; i++){
+                        for(int j = 0; j < 10; j++){
+                            out << chanceArray[i][j] << " ";
+                        }
+                        out << endl;
+                    }
+                    out.close();
                     break;
                 }
             }
+            //allow the computer a turn
             if(computerGuess(*userMap)){
                 previousHit = true;
+                //if all the ships were sunk, load the file with the chanceArray and end game
                 if(!checkExistence(*userMap, "A") && !checkExistence(*userMap, "B") && !checkExistence(*userMap, "C") && !checkExistence(*userMap, "S") && !checkExistence(*userMap, "D")){
                     cout << "Oh no! The computer sunk all of your ships! You lost. :(";
+                    //write to file at end of program
+                    ofstream out("likelihood.txt");
+                    for (int i = 0; i < 10; i++){
+                        for(int j = 0; j < 10; j++){
+                            out << chanceArray[i][j] << " ";
+                        }
+                        out << endl;
+                    }
+                    out.close();
                     break;
                 }
             }
         }while(continuePlaying);
     }
     
-    //put stuff here!
     
-    
-    //write to file at end of program
-    ofstream out("likelihood.txt");
-    for (int i = 0; i < 10; i++){
-        for(int j = 0; j < 10; j++){
-            out << chanceArray[i][j] << " ";
-        }
-        out << endl;
-    }
-    out.close();
+
     return 0;
 }
