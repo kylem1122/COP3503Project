@@ -1,5 +1,5 @@
-# COP3503Project
-Term Project
+## COMPILE
+g++ -o projecct project.cpp -std=c++11 -Wall
 
 ## RUN
 ### ./project create
@@ -11,6 +11,6 @@ Runs project with data from previous games
 ### ./project erase
 Erases previous data, starts over with a 10x10 grid and overwrites the file.
   
-## Placing Pieces
+## PLACING PIECES
 
-## How To Play
+## HOW TO PLAY
