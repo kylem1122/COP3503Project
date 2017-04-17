@@ -38,6 +38,11 @@ int menu(){
         if(!(cin >> selection)){
             cout << endl << "ERROR: Invalid selection. Try again." << endl;
             cin.clear();
+            //!!!!!!!!!!!!!!!!
+            //Thefollowing line is needed to run on a Mac terminal
+            //Please REMOVE or comment out the line if running on a different computer
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            //^^^^^^^that line^^^^^^^^^
         }
         else if(selection > 6 || selection < 1){
             cout << endl << "ERROR: Invalid selection. Try again." << endl;
