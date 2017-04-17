@@ -14,3 +14,6 @@ Erases previous data, starts over with a 10x10 grid and overwrites the file.
 ## PLACING PIECES
 
 ## HOW TO PLAY
+1. Place pieces manually or automatically.
+2. Start game.
+3. 
