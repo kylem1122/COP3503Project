@@ -15,5 +15,6 @@ Erases previous data, starts over with a 10x10 grid and overwrites the file.
 
 ## HOW TO PLAY
 1. Place pieces manually or automatically.
-2. Start game.
-3. 
+2. Start game through option in main menu.
+3. Enter inputs as letter-number combination, such as A8.
+4. Repeat entering inputs until all of one player's ships are sunk.
