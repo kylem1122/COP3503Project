@@ -1829,7 +1829,7 @@ int main(int argc, char ** argv){
         cout << "Invalid choice. Try again." << endl;
         return 1;
     }
-    if(fileLoad != "erase" && fileLoad != "load"){
+    if(fileLoad != "erase" && fileLoad != "load" && fileLoad != "create"){
         cout << "Invalid choice. Try again." << endl;
         return 1;
     }
